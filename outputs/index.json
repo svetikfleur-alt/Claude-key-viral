@@ -1,5 +1,52 @@
 [
   {
+    "run_id": "2026-05-21_09-49-22",
+    "timestamp": "2026-05-21T07:50:39.723Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\99_report.md",
+    "assets_count": 11,
+    "video_count": 3,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Scene graph sequence video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\07_scene-graph-assets\\scene-graph-sequence.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_09-49-22\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
     "run_id": "2026-05-21_08-57-26",
     "timestamp": "2026-05-21T06:57:27.599Z",
     "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-57-26",

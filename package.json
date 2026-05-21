@@ -1,7 +1,7 @@
 {
   "name": "comfyui-mcp-runner",
   "version": "1.0.0",
-  "description": "Hybrid media platform: local-first MCP server + REST API + web dashboard + ComfyUI bridge. Code-first renderers (SVG, HTML cards, Remotion video) + optional local ComfyUI AI backend + 30+ cloud API integrations.",
+  "description": "Local-first MCP media runner for structured, reproducible code-rendered assets (SVG/HTML/Remotion) with optional local ComfyUI workflows.",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",

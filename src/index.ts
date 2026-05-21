@@ -96,7 +96,7 @@ async function writeFailedRunLog(params: {
 
 
 async function main() {
-  const server = new McpServer({ name: 'comfyui-mcp-runner', version: '0.4.0' });
+  const server = new McpServer({ name: 'comfyui-mcp-runner', version: '1.0.0' });
 
   async function runWorkflow(input: RunInput) {
     const { config, client } = await getRuntime();
@@ -839,17 +839,17 @@ async function main() {
     }
   });
 
-  // ── Start the platform HTTP server + dashboard ──────────────────────────
-  // Runs alongside the MCP stdio server in the same process.
-  // Dashboard: http://127.0.0.1:3333
-  // API:       http://127.0.0.1:3333/api
-  try {
-    const { config } = await getRuntime();
-    const platformPort = parseInt(process.env.PLATFORM_PORT ?? '3333', 10);
-    await startPlatform(config, projectRoot, platformPort, server);
-  } catch (platformError) {
-    // Platform HTTP server failure is non-fatal — MCP server continues.
-    console.error('[platform] Failed to start HTTP server:', platformError);
+  // Optional local HTTP server/dashboard. Disabled by default.
+  // Enable by setting `ENABLE_PLATFORM=1`.
+  if (process.env.ENABLE_PLATFORM === '1') {
+    try {
+      const { config } = await getRuntime();
+      const platformPort = parseInt(process.env.PLATFORM_PORT ?? '3333', 10);
+      await startPlatform(config, projectRoot, platformPort, server);
+    } catch (platformError) {
+      // Platform HTTP server failure is non-fatal — MCP server continues.
+      console.error('[platform] Failed to start HTTP server:', platformError);
+    }
   }
 
   await server.connect(new StdioServerTransport());
