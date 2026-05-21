@@ -8,18 +8,18 @@
   "polling_interval_seconds": 2,
   "polling_timeout_seconds": 300,
   "workflows": {
+    "passthrough-image": {
+      "file": "passthrough-image.workflow.json",
+      "description": "Minimal end-to-end wiring test: LoadImage -> SaveImage. No models required. Uses robot-source.png from ComfyUI input/.",
+      "comfyui_url_override": "http://127.0.0.1:8000",
+      "mappings": {}
+    },
     "basic-image": {
       "file": "basic-image.workflow.json",
-      "description": "Legacy/example workflow (placeholder checkpoint). Use qwen-image-edit-pro for real local AI-looking output.",
+      "description": "Simple passthrough workflow for testing. Loads input image and saves it. No model required.",
       "mappings": {
-        "positive_prompt": { "node_id": "6", "field_path": ["inputs", "text"] },
-        "negative_prompt": { "node_id": "7", "field_path": ["inputs", "text"] },
-        "seed": { "node_id": "3", "field_path": ["inputs", "seed"] },
-        "width": { "node_id": "5", "field_path": ["inputs", "width"] },
-        "height": { "node_id": "5", "field_path": ["inputs", "height"] },
         "extra_params": {
-          "steps": { "node_id": "3", "field_path": ["inputs", "steps"] },
-          "cfg": { "node_id": "3", "field_path": ["inputs", "cfg"] }
+          "source_image": { "node_id": "1", "field_path": ["inputs", "image"] }
         }
       }
     },

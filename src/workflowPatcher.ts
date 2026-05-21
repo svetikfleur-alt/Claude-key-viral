@@ -173,18 +173,23 @@ export function patchWorkflowForRun(
   workflow: JsonObject,
   mappings: WorkflowMappings | undefined,
   input: RunInput,
-): { workflow: JsonObject; changes: PatchedFieldChange[] } {
+): { workflow: JsonObject; changes: PatchedFieldChange[]; warnings: string[] } {
   const result = dryRunPatchWorkflow(workflowName, workflow, mappings, input);
-  if (!mappings) {
-    throw new Error(`Missing workflow mapping. Cause: no mappings are configured for workflow '${workflowName}'. Suggested fix: add the workflow to config.json under workflows.`);
-  }
-  if (result.warnings.length > 0) {
-    throw new Error(`Workflow patch failed. Cause: ${result.warnings.join(' ')} Suggested fix: add the missing mappings to config.json or remove the unsupported inputs.`);
-  }
   const workflowCopy = cloneJson(workflow);
+
+  if (!mappings) {
+    // Allow workflows that already have baked-in values to run unchanged.
+    return {
+      workflow: workflowCopy,
+      changes: [],
+      warnings: result.warnings,
+    };
+  }
+
   const changes = result.changed_nodes.map((change) => patchMappedField(workflowName, workflowCopy, change.input_name, {
     node_id: change.node_id,
     field_path: change.field_path,
   }, change.next_value));
-  return { workflow: workflowCopy, changes };
+
+  return { workflow: workflowCopy, changes, warnings: result.warnings };
 }

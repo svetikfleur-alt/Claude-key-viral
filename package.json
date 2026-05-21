@@ -15,6 +15,7 @@
     "platform:dev": "tsx src/index.ts",
     "media:demo": "tsx scripts/generate-media-demo.ts",
     "media:launch": "tsx scripts/generate-launch-assets.ts",
+    "media:benchmark": "tsx scripts/visual-benchmark.ts",
     "media:scenarios": "tsx scripts/generate-scenario-suite.ts",
     "media:treatment": "tsx scripts/generate-cinematic-treatment.ts",
     "media:check-launch": "tsx scripts/check-launch-assets.ts",

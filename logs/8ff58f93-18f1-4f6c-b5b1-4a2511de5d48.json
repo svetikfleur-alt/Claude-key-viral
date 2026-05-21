@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-05-21T08:36:29.687Z",
+  "workflow_name": "passthrough-image",
+  "prompt_id": "4a808ad2-346d-4424-ade4-c6c0f0c8dd9d",
+  "comfyui_url": "http://127.0.0.1:8000",
+  "input_parameters": {
+    "workflow_name": "passthrough-image",
+    "positive_prompt": "(unused)"
+  },
+  "prompt_json": {
+    "1": {
+      "inputs": {
+        "image": "robot-source.png"
+      },
+      "class_type": "LoadImage"
+    },
+    "2": {
+      "inputs": {
+        "images": [
+          "1",
+          0
+        ],
+        "filename_prefix": "mcp_passthrough"
+      },
+      "class_type": "SaveImage"
+    }
+  },
+  "duration_seconds": 2.018,
+  "status": "completed",
+  "outputs": {
+    "images": [
+      {
+        "type": "image",
+        "path": "mcp_passthrough_00001_.png",
+        "filename": "mcp_passthrough_00001_.png",
+        "subfolder": "",
+        "source_node_id": "2",
+        "raw": {
+          "filename": "mcp_passthrough_00001_.png",
+          "subfolder": "",
+          "type": "output"
+        }
+      }
+    ],
+    "videos": [],
+    "other": [],
+    "warnings": []
+  },
+  "warnings": []
+}

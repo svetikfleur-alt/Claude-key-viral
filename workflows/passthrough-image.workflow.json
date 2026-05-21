@@ -11,8 +11,9 @@
         "1",
         0
       ],
-      "filename_prefix": "basic-image"
+      "filename_prefix": "mcp_passthrough"
     },
     "class_type": "SaveImage"
   }
 }
+

@@ -107,7 +107,8 @@ async function main() {
       return { ok: false as const, text: JSON.stringify(health, null, 2) };
     }
 
-    const { workflow: patchedWorkflow } = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, input);
+    const patched = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, input);
+    const patchedWorkflow = patched.workflow;
     const runId = randomUUID();
     const logFile = buildRunLogPath(config, runId);
     const started = Date.now();
@@ -117,7 +118,7 @@ async function main() {
       const history = await client.waitForPrompt(queued.prompt_id, comfyuiUrl);
       const outputs = detectOutputsFromHistory(history, queued.prompt_id);
       const durationSeconds = Number(((Date.now() - started) / 1000).toFixed(3));
-      const warnings = [...outputs.warnings];
+      const warnings = [...patched.warnings, ...outputs.warnings];
 
       await writeRunLog(logFile, {
         timestamp: new Date().toISOString(),
@@ -161,6 +162,7 @@ async function main() {
           },
           duration_seconds: durationSeconds,
           log_file: logFile,
+          patch_warnings: patched.warnings,
           warnings,
         }, null, 2),
       };
