@@ -1,0 +1,12 @@
+{
+  "workflow_name": "example-workflow",
+  "positive_prompt": "cinematic portrait of a cyberpunk fox",
+  "negative_prompt": "blurry, low quality",
+  "seed": 123456,
+  "width": 1024,
+  "height": 1024,
+  "wait": true,
+  "extra_params": {
+    "cfg": 7
+  }
+}
