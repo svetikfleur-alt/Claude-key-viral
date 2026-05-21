@@ -1,0 +1,10 @@
+{
+  "_note": "This is a placeholder workflow entry for WAN image-to-video. It requires locally installed WAN models. Export a working WAN I2V API prompt from your ComfyUI instance and replace this file.",
+  "1": {
+    "inputs": {
+      "image": "robot-source.png"
+    },
+    "class_type": "LoadImage"
+  }
+}
+

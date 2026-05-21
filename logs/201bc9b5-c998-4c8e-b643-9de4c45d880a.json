@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-05-18T11:14:52.746Z",
+  "workflow_name": "basic-image",
+  "input_parameters": {
+    "positive_prompt": "a cinematic fox walking through foggy pines at dawn",
+    "negative_prompt": "blurry, low quality, text, watermark",
+    "seed": 12345,
+    "width": 768,
+    "height": 512,
+    "extra_params": {
+      "steps": 28,
+      "cfg": 7.5
+    }
+  },
+  "status": "failed",
+  "error": "ComfyUI prompt submission failed. Cause: HTTP 400 Bad Request. Suggested fix: check the workflow JSON and ComfyUI server logs."
+}

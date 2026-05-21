@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08101f"/>
+      <stop offset="55%" stop-color="#0c1728"/>
+      <stop offset="100%" stop-color="#122236"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e1b2f"/>
+      <stop offset="100%" stop-color="#0a1322"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="210" cy="150" r="190" fill="rgba(55,165,255,0.14)" filter="url(#soft)"/>
+  <circle cx="1370" cy="780" r="220" fill="rgba(52,211,153,0.12)" filter="url(#soft)"/>
+  <rect x="40" y="40" width="1520" height="820" rx="40" fill="none" stroke="rgba(125,211,252,0.16)"/>
+  <text x="90" y="118" fill="#f8fafc" font-size="62" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Structured local media pipeline</text>
+  <text x="90" y="166" fill="#b7c6db" font-size="28" font-family="Segoe UI, Arial, sans-serif">Claude Desktop → Local MCP Runner → Code renderers / Local ComfyUI → Outputs / Logs / Gallery</text>
+
+  <rect x="90" y="248" width="280" height="166" rx="28" fill="url(#panel)" stroke="rgba(125,211,252,0.34)"/>
+  <rect x="432" y="248" width="280" height="166" rx="28" fill="url(#panel)" stroke="rgba(147,197,253,0.34)"/>
+  <rect x="774" y="214" width="320" height="106" rx="26" fill="url(#panel)" stroke="rgba(125,211,252,0.24)"/>
+  <rect x="774" y="346" width="320" height="106" rx="26" fill="url(#panel)" stroke="rgba(134,239,172,0.24)"/>
+  <rect x="1156" y="248" width="350" height="166" rx="28" fill="url(#panel)" stroke="rgba(134,239,172,0.34)"/>
+
+  <text x="122" y="300" fill="#7dd3fc" font-size="16" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">SOURCE</text>
+  <text x="122" y="338" fill="#f8fafc" font-size="34" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Claude / Agent</text>
+  <text x="122" y="378" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">Brief, constraints,</text>
+  <text x="122" y="408" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">asset plan, review loop.</text>
+
+  <text x="464" y="300" fill="#93c5fd" font-size="16" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">ORCHESTRATION</text>
+  <text x="464" y="338" fill="#f8fafc" font-size="34" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Local MCP Runner</text>
+  <text x="464" y="378" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">Template selection,</text>
+  <text x="464" y="408" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">render, validate, index.</text>
+
+  <text x="806" y="254" fill="#7dd3fc" font-size="16" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">PRECISE BACKEND</text>
+  <text x="806" y="288" fill="#f8fafc" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">HTML / CSS / SVG / Remotion</text>
+  <text x="806" y="314" fill="#bfd0e4" font-size="20" font-family="Segoe UI, Arial, sans-serif">Deterministic cards, diagrams, thumbnails, and videos.</text>
+
+  <text x="806" y="386" fill="#86efac" font-size="16" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">OPTIONAL RICHNESS</text>
+  <text x="806" y="420" fill="#f8fafc" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Local ComfyUI</text>
+  <text x="806" y="446" fill="#bfd0e4" font-size="20" font-family="Segoe UI, Arial, sans-serif">Use when realism or cinematic motion is actually needed.</text>
+
+  <text x="1188" y="300" fill="#86efac" font-size="16" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">OUTPUTS</text>
+  <text x="1188" y="338" fill="#f8fafc" font-size="34" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Runs, logs, gallery</text>
+  <text x="1188" y="378" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">Inspectable folders,</text>
+  <text x="1188" y="408" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">manifest, report, review.</text>
+
+  <path d="M370 330 C 404 330, 400 330, 432 330" stroke="#7dd3fc" stroke-width="6" fill="none"/>
+  <path d="M712 330 C 750 330, 736 268, 774 268" stroke="#7dd3fc" stroke-width="6" fill="none"/>
+  <path d="M712 330 C 750 330, 736 398, 774 398" stroke="#86efac" stroke-width="6" fill="none"/>
+  <path d="M1094 268 C 1124 268, 1126 330, 1156 330" stroke="#7dd3fc" stroke-width="6" fill="none"/>
+  <path d="M1094 398 C 1124 398, 1126 330, 1156 330" stroke="#86efac" stroke-width="6" fill="none"/>
+
+  <rect x="90" y="560" width="420" height="200" rx="28" fill="rgba(8,16,30,0.84)" stroke="rgba(125,211,252,0.14)"/>
+  <text x="122" y="608" fill="#7dd3fc" font-size="18" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">LOCAL-FIRST</text>
+  <text x="122" y="650" fill="#f8fafc" font-size="30" font-family="Segoe UI, Arial, sans-serif" font-weight="700">No hosted server required</text>
+  <text x="122" y="690" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">The core pipeline runs on the user’s machine.</text>
+  <text x="122" y="722" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">No mandatory API key and no cloud dashboard.</text>
+
+  <rect x="560" y="560" width="420" height="200" rx="28" fill="rgba(8,16,30,0.84)" stroke="rgba(125,211,252,0.14)"/>
+  <text x="592" y="608" fill="#93c5fd" font-size="18" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">STRUCTURED OUTPUTS</text>
+  <text x="592" y="650" fill="#f8fafc" font-size="30" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Readable and reproducible</text>
+  <text x="592" y="690" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">Every run records what was rendered, where it lives,</text>
+  <text x="592" y="722" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">and what still needs the next pass.</text>
+
+  <rect x="1030" y="560" width="476" height="200" rx="28" fill="rgba(8,16,30,0.84)" stroke="rgba(125,211,252,0.14)"/>
+  <text x="1062" y="608" fill="#86efac" font-size="18" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">STRUCTURE BEFORE RANDOMNESS</text>
+  <text x="1062" y="650" fill="#f8fafc" font-size="30" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Precise assets first, generative richness second</text>
+  <text x="1062" y="690" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">Cards, diagrams, and videos-as-code are the foundation.</text>
+  <text x="1062" y="722" fill="#bfd0e4" font-size="22" font-family="Segoe UI, Arial, sans-serif">ComfyUI is an optional amplifier when needed.</text>
+</svg>

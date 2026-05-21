@@ -2,17 +2,84 @@
   "comfyui_url": "http://127.0.0.1:8188",
   "workflows_dir": "./workflows",
   "logs_dir": "./logs",
-  "presets_dir": "./presets",
-  "outputs_index_file": "./outputs/index.json",
-  "default_timeout_seconds": 120,
-  "polling_interval_seconds": 1.5,
-  "workflow_mappings": {
-    "example-workflow": {
-      "positive_prompt": { "node_id": "6", "path": ["inputs", "text"] },
-      "negative_prompt": { "node_id": "7", "path": ["inputs", "text"] },
-      "seed": { "node_id": "3", "path": ["inputs", "seed"] },
-      "width": { "node_id": "5", "path": ["inputs", "width"] },
-      "height": { "node_id": "5", "path": ["inputs", "height"] }
+  "generated_media_dir": "./generated-media",
+  "outputs_index_file": "./logs/output-index.json",
+  "request_timeout_seconds": 30,
+  "polling_interval_seconds": 2,
+  "polling_timeout_seconds": 300,
+  "workflows": {
+    "basic-image": {
+      "file": "basic-image.workflow.json",
+      "description": "Legacy/example workflow (placeholder checkpoint). Use qwen-image-edit-pro for real local AI-looking output.",
+      "mappings": {
+        "positive_prompt": { "node_id": "6", "field_path": ["inputs", "text"] },
+        "negative_prompt": { "node_id": "7", "field_path": ["inputs", "text"] },
+        "seed": { "node_id": "3", "field_path": ["inputs", "seed"] },
+        "width": { "node_id": "5", "field_path": ["inputs", "width"] },
+        "height": { "node_id": "5", "field_path": ["inputs", "height"] },
+        "extra_params": {
+          "steps": { "node_id": "3", "field_path": ["inputs", "steps"] },
+          "cfg": { "node_id": "3", "field_path": ["inputs", "cfg"] }
+        }
+      }
+    },
+    "qwen-image-edit-pro": {
+      "file": "qwen-image-edit-pro.workflow.json",
+      "description": "Local Qwen Image Edit workflow (photoreal-ish edits). Defaults to ComfyUI Desktop-safe on :8000.",
+      "comfyui_url_override": "http://127.0.0.1:8000",
+      "default_inputs": {
+        "extra_params": {
+          "steps": 4,
+          "cfg": 1,
+          "denoise": 0.78,
+          "source_image": "robot-source.png"
+        }
+      },
+      "mappings": {
+        "positive_prompt": {
+          "node_id": "6",
+          "field_path": ["inputs", "prompt"]
+        },
+        "seed": {
+          "node_id": "9",
+          "field_path": ["inputs", "seed"]
+        },
+        "extra_params": {
+          "steps": {
+            "node_id": "9",
+            "field_path": ["inputs", "steps"]
+          },
+          "cfg": {
+            "node_id": "9",
+            "field_path": ["inputs", "cfg"]
+          },
+          "denoise": {
+            "node_id": "9",
+            "field_path": ["inputs", "denoise"]
+          },
+          "source_image": {
+            "node_id": "1",
+            "field_path": ["inputs", "image"]
+          }
+        }
+      }
+    },
+    "wan-i2v-pro": {
+      "file": "wan-i2v-pro.workflow.json",
+      "description": "WAN image-to-video placeholder. Replace with your exported working WAN I2V API prompt JSON. Defaults to ComfyUI Desktop-safe on :8000.",
+      "comfyui_url_override": "http://127.0.0.1:8000",
+      "default_inputs": {
+        "extra_params": {
+          "start_image": "robot-source.png",
+          "duration_seconds": 6
+        }
+      },
+      "mappings": {
+        "positive_prompt": {
+          "node_id": "MISSING",
+          "field_path": ["inputs", "prompt"]
+        }
+      }
     }
   }
 }

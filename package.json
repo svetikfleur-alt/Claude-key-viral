@@ -1,7 +1,7 @@
 {
   "name": "comfyui-mcp-runner",
   "version": "0.4.0",
-  "description": "Minimal MCP server to run saved ComfyUI workflows locally",
+  "description": "Local MCP server that runs mapped ComfyUI image and video workflows",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
@@ -10,16 +10,37 @@
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "check": "tsc --noEmit",
-    "test": "node --test tests/basic.test.mjs"
+    "test": "tsx --test tests/basic.test.mjs",
+    "media:demo": "tsx scripts/generate-media-demo.ts",
+    "media:scenarios": "tsx scripts/generate-scenario-suite.ts",
+    "media:treatment": "tsx scripts/generate-cinematic-treatment.ts",
+    "analyze:reference": "tsx scripts/analyze-reference-video.ts",
+    "smoke:real": "tsx scripts/real-task-smoke.ts",
+    "comfyui:start": "powershell -ExecutionPolicy Bypass -File scripts/start-comfyui-cpu.ps1",
+    "comfyui:stop": "powershell -ExecutionPolicy Bypass -File scripts/stop-comfyui.ps1",
+    "comfyui:desktop-safe:start": "powershell -ExecutionPolicy Bypass -File scripts/start-comfyui-desktop-safe.ps1",
+    "comfyui:desktop-safe:stop": "powershell -ExecutionPolicy Bypass -File scripts/stop-comfyui-desktop-safe.ps1"
   },
   "keywords": [
     "mcp",
     "comfyui",
     "claude",
-    "image-generation"
+    "image-generation",
+    "video-generation",
+    "developer-tools"
   ],
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@modelcontextprotocol/sdk": "^1.12.3",
+    "@remotion/bundler": "^4.0.462",
+    "@remotion/renderer": "^4.0.462",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "remotion": "^4.0.462",
+    "satori": "^0.12.1",
+    "sharp": "^0.34.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -1,0 +1,291 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+type GalleryIndexEntry = {
+  run_id: string;
+  timestamp: string;
+  run_dir: string;
+  manifest_path: string;
+  report_path: string;
+  assets_count: number;
+  video_count: number;
+  status: 'completed';
+  featured_assets?: Array<{
+    title: string;
+    path: string;
+    kind: 'image' | 'video' | 'document';
+  }>;
+};
+
+function esc(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function rel(fromDir: string, toPath: string): string {
+  return path.relative(fromDir, toPath).replace(/\\/g, '/');
+}
+
+function assetPreview(runDir: string, asset: NonNullable<GalleryIndexEntry['featured_assets']>[number]): string {
+  const href = esc(rel(runDir, asset.path));
+  if (asset.kind === 'image') {
+    return `<a class="asset" href="${href}">
+      <img src="${href}" alt="${esc(asset.title)}" />
+      <span>${esc(asset.title)}</span>
+    </a>`;
+  }
+  if (asset.kind === 'video') {
+    return `<a class="asset" href="${href}">
+      <video src="${href}" muted playsinline preload="metadata"></video>
+      <span>${esc(asset.title)}</span>
+    </a>`;
+  }
+  return `<a class="asset asset-doc" href="${href}">
+    <div class="doc-pill">${esc(asset.title)}</div>
+    <span>${esc(asset.title)}</span>
+  </a>`;
+}
+
+function runCard(galleryDir: string, entry: GalleryIndexEntry): string {
+  const runHref = esc(rel(galleryDir, entry.run_dir));
+  const manifestHref = esc(rel(galleryDir, entry.manifest_path));
+  const reportHref = esc(rel(galleryDir, entry.report_path));
+  const assets = (entry.featured_assets ?? []).map((asset) => assetPreview(galleryDir, asset)).join('\n');
+  return `<section class="run-card">
+    <div class="run-meta">
+      <div class="run-eyebrow">Run ${esc(entry.run_id)}</div>
+      <h2>${esc(new Date(entry.timestamp).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }))}</h2>
+      <p>${entry.assets_count} assets • ${entry.video_count} video outputs • status: ${esc(entry.status)}</p>
+    </div>
+    <div class="run-links">
+      <a href="${runHref}">Open run folder</a>
+      <a href="${manifestHref}">Manifest</a>
+      <a href="${reportHref}">Report</a>
+    </div>
+    <div class="asset-grid">
+      ${assets || '<div class="empty">No featured assets recorded for this run yet.</div>'}
+    </div>
+  </section>`;
+}
+
+function html(entries: GalleryIndexEntry[], generatedAt: string, galleryDir: string): string {
+  const latest = entries[0];
+  const cards = entries.map((entry) => runCard(galleryDir, entry)).join('\n');
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Claude MCP Media Runner Gallery</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #08101f;
+      --panel: rgba(11, 20, 36, 0.88);
+      --panel-2: rgba(15, 27, 48, 0.92);
+      --text: #f8fafc;
+      --sub: #bfd0e4;
+      --line: rgba(125, 211, 252, 0.18);
+      --accent: #7dd3fc;
+      --accent-2: #86efac;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(125, 211, 252, 0.14), transparent 20%),
+        radial-gradient(circle at 82% 84%, rgba(134, 239, 172, 0.12), transparent 22%),
+        linear-gradient(145deg, #08101f 0%, #0d172b 46%, #122236 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 40px 28px 64px;
+    }
+    .hero {
+      padding: 32px;
+      border-radius: 32px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.22);
+    }
+    .hero .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(125, 211, 252, 0.12);
+      border: 1px solid rgba(125, 211, 252, 0.22);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+    h1 {
+      margin: 18px 0 12px;
+      font-size: clamp(42px, 5vw, 68px);
+      line-height: 0.98;
+      letter-spacing: -2px;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 920px;
+      color: var(--sub);
+      font-size: 22px;
+      line-height: 1.45;
+    }
+    .hero-meta {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-meta span {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #d4deec;
+      font-size: 15px;
+    }
+    .section-title {
+      margin: 32px 0 18px;
+      color: var(--sub);
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .run-list {
+      display: grid;
+      gap: 20px;
+    }
+    .run-card {
+      padding: 24px;
+      border-radius: 28px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.18);
+    }
+    .run-meta h2 {
+      margin: 10px 0 8px;
+      font-size: 28px;
+    }
+    .run-meta p, .run-eyebrow {
+      color: var(--sub);
+    }
+    .run-eyebrow {
+      font-size: 14px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .run-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 18px 0 22px;
+    }
+    .run-links a, .asset-grid a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .run-links a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(125, 211, 252, 0.1);
+      border: 1px solid rgba(125, 211, 252, 0.18);
+    }
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .asset {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      min-height: 220px;
+    }
+    .asset img, .asset video {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.28);
+    }
+    .asset span {
+      color: #dce7f8;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+    .asset-doc {
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .doc-pill {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(134, 239, 172, 0.12);
+      border: 1px solid rgba(134, 239, 172, 0.18);
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+    .empty {
+      color: var(--sub);
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(255,255,255,0.08);
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">Output gallery</div>
+      <h1>Claude MCP Media Runner</h1>
+      <p>Browse recent local-first media runs, inspect launch assets, compare videos, and jump straight to manifests and reports. This gallery is generated from <code>outputs/index.json</code>, not a hosted service.</p>
+      <div class="hero-meta">
+        <span>${entries.length} indexed run${entries.length === 1 ? '' : 's'}</span>
+        <span>Latest run: ${latest ? esc(latest.run_id) : 'none yet'}</span>
+        <span>Generated: ${esc(generatedAt)}</span>
+      </div>
+    </section>
+    <div class="section-title">Recent runs</div>
+    <section class="run-list">
+      ${cards || '<div class="empty">No runs indexed yet. Run npm run media:demo first.</div>'}
+    </section>
+  </main>
+</body>
+</html>`;
+}
+
+export async function generateOutputGallery(outputsRoot: string): Promise<{ html_path: string; run_count: number }> {
+  const resolvedOutputs = path.resolve(outputsRoot);
+  const galleryDir = path.join(resolvedOutputs, 'gallery');
+  const indexPath = path.join(resolvedOutputs, 'index.json');
+  await fs.mkdir(galleryDir, { recursive: true });
+
+  let entries: GalleryIndexEntry[] = [];
+  try {
+    const raw = await fs.readFile(indexPath, 'utf8');
+    const parsed = JSON.parse(raw) as GalleryIndexEntry[];
+    entries = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    entries = [];
+  }
+
+  const htmlPath = path.join(galleryDir, 'index.html');
+  await fs.writeFile(htmlPath, `${html(entries, new Date().toISOString(), galleryDir)}\n`, 'utf8');
+  return { html_path: htmlPath, run_count: entries.length };
+}

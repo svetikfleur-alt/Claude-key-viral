@@ -1,8 +1,477 @@
 [
   {
-    "timestamp": "2026-05-17T13:57:34.149Z",
-    "output_types": [
-      "image"
+    "run_id": "2026-05-21_08-41-43",
+    "timestamp": "2026-05-21T06:43:07.041Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\99_report.md",
+    "assets_count": 17,
+    "video_count": 4,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Scene graph sequence video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\07_scene-graph-assets\\scene-graph-sequence.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Cinematic treatment preview video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\06_cinematic-treatment\\03_preview-video\\cinematic-treatment-preview.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43\\99_report.md",
+        "kind": "document"
+      }
     ]
+  },
+  {
+    "run_id": "2026-05-21_08-10-53",
+    "timestamp": "2026-05-21T06:12:11.493Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\99_report.md",
+    "assets_count": 17,
+    "video_count": 4,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Scene graph sequence video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\07_scene-graph-assets\\scene-graph-sequence.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Cinematic treatment preview video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\06_cinematic-treatment\\03_preview-video\\cinematic-treatment-preview.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-10-53\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-21_07-39-56",
+    "timestamp": "2026-05-21T05:41:17.057Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\99_report.md",
+    "assets_count": 17,
+    "video_count": 4,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Scene graph sequence video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\07_scene-graph-assets\\scene-graph-sequence.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Cinematic treatment preview video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\06_cinematic-treatment\\03_preview-video\\cinematic-treatment-preview.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_07-39-56\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-20_19-21-58",
+    "timestamp": "2026-05-20T17:23:21.868Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\99_report.md",
+    "assets_count": 17,
+    "video_count": 4,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Scene graph sequence video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\07_scene-graph-assets\\scene-graph-sequence.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Cinematic treatment preview video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\06_cinematic-treatment\\03_preview-video\\cinematic-treatment-preview.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_19-21-58\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-20_18-22-52",
+    "timestamp": "2026-05-20T16:24:01.934Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\99_report.md",
+    "assets_count": 14,
+    "video_count": 3,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Cinematic treatment preview video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\06_cinematic-treatment\\03_preview-video\\cinematic-treatment-preview.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-20_18-22-52\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-18_19-43-45",
+    "timestamp": "2026-05-18T17:44:30.612Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45\\99_report.md",
+    "assets_count": 8,
+    "video_count": 2,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-43-45\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-18_19-38-16",
+    "timestamp": "2026-05-18T17:39:00.486Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16\\99_report.md",
+    "assets_count": 8,
+    "video_count": 2,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-38-16\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-18_19-33-14",
+    "timestamp": "2026-05-18T17:34:21.331Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14\\99_report.md",
+    "assets_count": 8,
+    "video_count": 2,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-33-14\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-18_19-30-10",
+    "timestamp": "2026-05-18T17:31:08.850Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10\\99_report.md",
+    "assets_count": 8,
+    "video_count": 2,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_19-30-10\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-18_18-46-17",
+    "timestamp": "2026-05-18T16:47:12.968Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17\\99_report.md",
+    "assets_count": 8,
+    "video_count": 2,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "Hero banner",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17\\01_static-launch-assets\\hero-banner.png",
+        "kind": "image"
+      },
+      {
+        "title": "Pipeline diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17\\02_pipeline-diagrams\\pipeline-diagram.svg",
+        "kind": "image"
+      },
+      {
+        "title": "Social launch card",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17\\03_social-cards\\social-launch-card.png",
+        "kind": "image"
+      },
+      {
+        "title": "Short project intro video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17\\04_video-codegen\\project-intro-short.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Longer structured demo video",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17\\04_video-codegen\\project-demo-long.mp4",
+        "kind": "video"
+      },
+      {
+        "title": "Run report",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-46-17\\99_report.md",
+        "kind": "document"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-18_18-40-13",
+    "timestamp": "2026-05-18T16:40:27.920Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-40-13",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-40-13\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-18_18-40-13\\99_report.md",
+    "assets_count": 7,
+    "video_count": 1,
+    "status": "completed"
   }
 ]

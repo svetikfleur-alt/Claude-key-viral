@@ -26,6 +26,12 @@
     },
     "class_type": "KSampler"
   },
+  "4": {
+    "inputs": {
+      "ckpt_name": "example-model.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple"
+  },
   "5": {
     "inputs": {
       "width": 512,
@@ -53,5 +59,28 @@
       ]
     },
     "class_type": "CLIPTextEncode"
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "9": {
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ],
+      "filename_prefix": "ComfyUI"
+    },
+    "class_type": "SaveImage"
   }
 }

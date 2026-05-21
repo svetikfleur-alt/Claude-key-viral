@@ -1,0 +1,43 @@
+{
+  "comfyui_url": "http://127.0.0.1:8188",
+  "workflows_dir": "./workflows",
+  "logs_dir": "./logs",
+  "outputs_index_file": "./logs/output-index.json",
+  "request_timeout_seconds": 30,
+  "polling_interval_seconds": 2,
+  "polling_timeout_seconds": 300,
+  "workflows": {
+    "basic-image": {
+      "file": "basic-image.workflow.json",
+      "description": "Example image workflow",
+      "mappings": {
+        "positive_prompt": {
+          "node_id": "6",
+          "field_path": ["inputs", "text"]
+        },
+        "negative_prompt": {
+          "node_id": "7",
+          "field_path": ["inputs", "text"]
+        },
+        "seed": {
+          "node_id": "3",
+          "field_path": ["inputs", "seed"]
+        },
+        "width": {
+          "node_id": "5",
+          "field_path": ["inputs", "width"]
+        },
+        "height": {
+          "node_id": "5",
+          "field_path": ["inputs", "height"]
+        },
+        "extra_params": {
+          "steps": {
+            "node_id": "3",
+            "field_path": ["inputs", "steps"]
+          }
+        }
+      }
+    }
+  }
+}

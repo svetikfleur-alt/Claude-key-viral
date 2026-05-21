@@ -1,0 +1,50 @@
+{
+  "source_video": "C:\\Users\\Lena\\Downloads\\mp_.mp4",
+  "duration_seconds": 8,
+  "scenes": [
+    {
+      "label": "Establishing reveal",
+      "start_seconds": 0,
+      "end_seconds": 2,
+      "objective": "Introduce the environment with instant atmosphere and motion.",
+      "visual_notes": [
+        "Wide cinematic framing.",
+        "Natural light ripples or reflective highlights.",
+        "Underwater premium cinematic reef action, wide-angle aquatic tracking, realistic light and texture, subject-led motion, avoid toy motion graphics."
+      ]
+    },
+    {
+      "label": "Primary action beat",
+      "start_seconds": 2,
+      "end_seconds": 4,
+      "objective": "Show the subject performing the signature movement.",
+      "visual_notes": [
+        "Track the main subject through space.",
+        "Keep foreground or environmental depth visible.",
+        "Avoid flat center-framed dead space."
+      ]
+    },
+    {
+      "label": "Close intensity beat",
+      "start_seconds": 4,
+      "end_seconds": 6,
+      "objective": "Move closer and let motion or texture sell realism.",
+      "visual_notes": [
+        "Use faster parallax or environmental pass-by.",
+        "Let water, particles, or texture create realism if applicable.",
+        "Keep subject silhouette clear."
+      ]
+    },
+    {
+      "label": "Exit / payoff",
+      "start_seconds": 6,
+      "end_seconds": 8,
+      "objective": "Land the shot with a memorable final composition.",
+      "visual_notes": [
+        "Preserve a clean read of the subject.",
+        "End on the strongest environment + action balance.",
+        "Leave room for title or end-card if needed."
+      ]
+    }
+  ]
+}

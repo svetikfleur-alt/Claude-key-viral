@@ -1,5 +1,11 @@
 node_modules/
 dist/
 logs/*.log
+logs/output-index.json
+logs/manual-smoke/
+generated-media/
 !.gitkeep
+outputs/runs/
 .DS_Store
+config.json
+src/keys
