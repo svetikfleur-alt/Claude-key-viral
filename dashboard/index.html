@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hybrid Media Platform</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">Media Platform</span>
+      </div>
+      <ul class="nav-list">
+        <li><a href="#" class="nav-link active" data-view="dashboard">
+          <span class="nav-icon">◈</span> Dashboard
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="generate">
+          <span class="nav-icon">✦</span> Generate
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="assets">
+          <span class="nav-icon">◫</span> Asset Library
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="jobs">
+          <span class="nav-icon">⟳</span> Jobs
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="projects">
+          <span class="nav-icon">◻</span> Projects
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="workflows">
+          <span class="nav-icon">⬡</span> Workflows
+        </a></li>
+      </ul>
+      <div class="sidebar-status" id="sidebar-status">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-label">Connecting…</span>
+      </div>
+    </nav>
+    <main class="main" id="main-content">
+      <!-- Views injected by JS -->
+    </main>
+  </div>
+  <div id="toast-container"></div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -85,6 +85,12 @@ Generate a scenario suite (many scene types from the same DSL):
 npm run media:scenarios
 ```
 
+Generate the minimal launch asset pack (A–E required assets):
+
+```bash
+npm run media:launch
+```
+
 That creates a fresh run folder like:
 
 ```text

@@ -57,8 +57,10 @@ function renderTemplate(input: SvgTemplateInput, width: number, height: number):
       <rect x="860" y="240" rx="18" ry="18" width="290" height="120" fill="#243654" stroke="#4B6A9B"/>
       <rect x="1250" y="240" rx="18" ry="18" width="270" height="120" fill="#243654" stroke="#4B6A9B"/>
       <text x="115" y="310" fill="#E6EEF8" font-size="30" font-family="Inter,Arial,sans-serif">Claude Desktop</text>
-      <text x="507" y="310" fill="#E6EEF8" font-size="30" font-family="Inter,Arial,sans-serif">MCP Runner</text>
-      <text x="915" y="310" fill="#E6EEF8" font-size="30" font-family="Inter,Arial,sans-serif">Local ComfyUI</text>
+      <text x="507" y="308" fill="#E6EEF8" font-size="30" font-family="Inter,Arial,sans-serif">Local MCP Runner</text>
+      <text x="904" y="300" fill="#E6EEF8" font-size="28" font-family="Inter,Arial,sans-serif">Code Renderers</text>
+      <text x="904" y="336" fill="#B8C7DD" font-size="20" font-family="Inter,Arial,sans-serif">SVG • HTML/CSS • Video</text>
+      <text x="904" y="366" fill="#B8C7DD" font-size="20" font-family="Inter,Arial,sans-serif">Optional Local ComfyUI</text>
       <text x="1290" y="310" fill="#E6EEF8" font-size="30" font-family="Inter,Arial,sans-serif">Outputs</text>
       <line x1="370" y1="300" x2="470" y2="300" stroke="#8FB3FF" stroke-width="6"/>
       <line x1="760" y1="300" x2="860" y2="300" stroke="#8FB3FF" stroke-width="6"/>

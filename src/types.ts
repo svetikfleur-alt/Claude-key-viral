@@ -443,7 +443,7 @@ export interface SvgSceneVideoInput {
 }
 
 export interface HtmlCardInput {
-  template: 'project_hero_banner' | 'social_launch_card' | 'feature_overview_card' | 'capability_card';
+  template: 'project_hero_banner' | 'social_launch_card' | 'feature_overview_card' | 'capability_card' | 'use_case_card';
   title: string;
   subtitle: string;
   eyebrow?: string;

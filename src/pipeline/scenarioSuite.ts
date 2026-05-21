@@ -103,12 +103,12 @@ function uiScene(): SvgSceneSpec {
       { kind: 'rect', x: 130, y: 536, width: 352, height: 64, radius: 18, fill: 'rgba(15, 23, 42, 0.92)', stroke: 'rgba(125,211,252,0.14)' },
       { kind: 'text', x: 156, y: 560, width: 280, text: 'Render hero banner', font_size: 20, font_weight: 650, fill: '#e2e8f0' },
       { kind: 'text', x: 156, y: 586, width: 280, text: 'scene_graph • png', font_size: 16, fill: '#86efac' },
-      { kind: 'rect', x: 130, y: 612, width: 352, height: 64, radius: 18, fill: 'rgba(15, 23, 42, 0.92)', stroke: 'rgba(125,211,252,0.14)' },
-      { kind: 'text', x: 156, y: 636, width: 280, text: 'Generate storyboard board', font_size: 20, font_weight: 650, fill: '#e2e8f0' },
-      { kind: 'text', x: 156, y: 662, width: 280, text: 'scene_graph • svg', font_size: 16, fill: '#93c5fd' },
-      { kind: 'rect', x: 130, y: 688, width: 352, height: 64, radius: 18, fill: 'rgba(15, 23, 42, 0.92)', stroke: 'rgba(125,211,252,0.14)' },
-      { kind: 'text', x: 156, y: 712, width: 280, text: 'Assemble scene-sequence video', font_size: 20, font_weight: 650, fill: '#e2e8f0' },
-      { kind: 'text', x: 156, y: 738, width: 280, text: 'remotion • mp4', font_size: 16, fill: '#facc15' },
+      { kind: 'rect', x: 130, y: 616, width: 352, height: 64, radius: 18, fill: 'rgba(15, 23, 42, 0.92)', stroke: 'rgba(125,211,252,0.14)' },
+      { kind: 'text', x: 156, y: 640, width: 280, text: 'Generate storyboard', font_size: 20, font_weight: 650, fill: '#e2e8f0' },
+      { kind: 'text', x: 156, y: 666, width: 280, text: 'scene_graph • svg', font_size: 16, fill: '#93c5fd' },
+      { kind: 'rect', x: 130, y: 696, width: 352, height: 64, radius: 18, fill: 'rgba(15, 23, 42, 0.92)', stroke: 'rgba(125,211,252,0.14)' },
+      { kind: 'text', x: 156, y: 720, width: 280, text: 'Assemble scene video', font_size: 20, font_weight: 650, fill: '#e2e8f0' },
+      { kind: 'text', x: 156, y: 746, width: 280, text: 'remotion • mp4', font_size: 16, fill: '#facc15' },
 
       { kind: 'rect', x: 560, y: 430, width: 946, height: 340, radius: 26, fill: 'rgba(8, 16, 30, 0.86)', stroke: 'rgba(125,211,252,0.16)', filter: 'shadow' },
       { kind: 'text', x: 596, y: 476, width: 520, text: 'Signals', font_size: 28, font_weight: 740, fill: '#f8fafc' },
@@ -268,15 +268,15 @@ function storyboardScene(): SvgSceneSpec {
     nodes: [
       { kind: 'rect', x: 54, y: 54, width: 1492, height: 792, radius: 34, stroke: 'rgba(125,211,252,0.14)', fill: 'rgba(0,0,0,0)' },
       { kind: 'text', x: 96, y: 120, width: 720, text: 'Storyboard Board', font_size: 18, font_weight: 700, letter_spacing: 2.2, fill: '#7dd3fc' },
-      { kind: 'text', x: 96, y: 168, width: 1080, text: 'A storyboard is just a constrained scene layout', font_size: 54, font_weight: 760, fill: '#f8fafc', line_height: 1.04 },
-      { kind: 'text', x: 96, y: 248, width: 860, text: 'Use it for video planning, shot lists, and review surfaces.', font_size: 24, fill: '#c7d7ea', line_height: 1.36 },
+      { kind: 'text', x: 96, y: 168, width: 1320, text: 'A storyboard is just a constrained scene layout', font_size: 50, font_weight: 760, fill: '#f8fafc', line_height: 1.05 },
+      { kind: 'text', x: 96, y: 270, width: 920, text: 'Use it for video planning, shot lists, and review surfaces.', font_size: 24, fill: '#c7d7ea', line_height: 1.36 },
 
-      { kind: 'rect', x: 96, y: 308, width: 1408, height: 512, radius: 30, fill: 'rgba(8,16,30,0.86)', stroke: 'rgba(148,163,184,0.18)', filter: 'shadow' },
+      { kind: 'rect', x: 96, y: 318, width: 1408, height: 502, radius: 30, fill: 'rgba(8,16,30,0.86)', stroke: 'rgba(148,163,184,0.18)', filter: 'shadow' },
       ...Array.from({ length: 6 }, (_, index) => {
         const col = index % 3;
         const row = Math.floor(index / 3);
         const x = 132 + col * 470;
-        const y = 348 + row * 236;
+        const y = 354 + row * 232;
         return [
           { kind: 'rect' as const, x, y, width: 430, height: 178, radius: 22, fill: 'rgba(2,6,23,0.58)', stroke: 'rgba(125,211,252,0.14)' },
           { kind: 'path' as const, d: `M${x + 46} ${y + 126} C ${x + 160} ${y + 48}, ${x + 300} ${y + 216}, ${x + 384} ${y + 78}`, stroke: 'rgba(125,211,252,0.34)', stroke_width: 4, stroke_linecap: 'round' as const, fill: 'none' },

@@ -22,6 +22,8 @@ function dims(template: HtmlCardInput['template'], width?: number, height?: numb
       return { width: 1600, height: 900 };
     case 'social_launch_card':
       return { width: 1200, height: 630 };
+    case 'use_case_card':
+      return { width: 1280, height: 720 };
     case 'feature_overview_card':
     case 'capability_card':
     default:
@@ -412,7 +414,61 @@ function buildCard(input: HtmlCardInput, width: number, height: number): React.R
     },
   },
   React.createElement('div', {}, footer),
-  React.createElement('div', {}, input.template === 'capability_card' ? 'Works now vs planned later' : 'Developer-tool visual system'));
+  React.createElement('div', {}, input.template === 'capability_card'
+    ? 'Works now vs planned later'
+    : input.template === 'use_case_card'
+      ? 'Practical use case card'
+      : 'Developer-tool visual system'));
+
+  if (input.template === 'use_case_card') {
+    const overlayHeader = React.createElement('div', {
+      style: {
+        position: 'absolute',
+        left: 56,
+        right: 56,
+        top: 56,
+        padding: '26px 30px',
+        borderRadius: 30,
+        display: 'flex',
+        flexDirection: 'column',
+        background: 'rgba(8, 16, 30, 0.72)',
+        border: '1px solid rgba(125, 211, 252, 0.16)',
+        boxShadow: '0 22px 70px rgba(0,0,0,0.25)',
+      },
+    },
+    React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 18 } },
+      badge(input.eyebrow ?? 'Practical use case', '#7dd3fc'),
+      badge('Deterministic overlay', '#86efac'),
+      badge('Reusable template', '#93c5fd')),
+    React.createElement('div', { style: { fontSize: 58, fontWeight: 820, letterSpacing: -2.2, lineHeight: 0.98, maxWidth: 980 } }, input.title),
+    React.createElement('div', { style: { fontSize: 26, color: '#c7d7ea', lineHeight: 1.3, marginTop: 14, maxWidth: 980 } }, input.subtitle));
+
+    const backgroundStage = React.createElement('div', {
+      style: {
+        position: 'absolute',
+        left: 56,
+        right: 56,
+        top: 360,
+        bottom: 110,
+        borderRadius: 34,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        padding: 28,
+        background: 'rgba(2, 6, 23, 0.58)',
+        border: '1px solid rgba(148, 163, 184, 0.16)',
+        boxShadow: '0 28px 80px rgba(0,0,0,0.32)',
+      },
+    },
+    React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 16 } },
+      badge('Travel thumbnail', '#7dd3fc'),
+      badge('Quote card', '#86efac'),
+      badge('Educational explainer', '#facc15')),
+    React.createElement('div', { style: { width: 760, color: '#c7d7ea', fontSize: 22, lineHeight: 1.4 } },
+      'This is the correct role for code-first media: lock the overlay layout and text. The background can be swapped later (photo, stock, or local ComfyUI) without breaking hierarchy.'));
+
+    return React.createElement('div', { style: shellStyle }, ambient, overlayHeader, backgroundStage, footerBar);
+  }
 
   return React.createElement('div', { style: shellStyle },
     ambient,

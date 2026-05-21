@@ -1,5 +1,69 @@
 [
   {
+    "run_id": "2026-05-21_08-57-26",
+    "timestamp": "2026-05-21T06:57:27.599Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-57-26",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-57-26\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-57-26\\99_report.md",
+    "assets_count": 7,
+    "video_count": 0,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "UI product screen",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-57-26\\08_scenario-suite\\01_ui.png",
+        "kind": "image"
+      },
+      {
+        "title": "System diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-57-26\\08_scenario-suite\\02_system-diagram.png",
+        "kind": "image"
+      },
+      {
+        "title": "Data visualization",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-57-26\\08_scenario-suite\\03_data-viz.png",
+        "kind": "image"
+      },
+      {
+        "title": "Map / route layout",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-57-26\\08_scenario-suite\\04_map-route.png",
+        "kind": "image"
+      }
+    ]
+  },
+  {
+    "run_id": "2026-05-21_08-55-17",
+    "timestamp": "2026-05-21T06:55:43.140Z",
+    "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-55-17",
+    "manifest_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-55-17\\00_manifest.md",
+    "report_path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-55-17\\99_report.md",
+    "assets_count": 8,
+    "video_count": 1,
+    "status": "completed",
+    "featured_assets": [
+      {
+        "title": "UI product screen",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-55-17\\08_scenario-suite\\01_ui.png",
+        "kind": "image"
+      },
+      {
+        "title": "System diagram",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-55-17\\08_scenario-suite\\02_system-diagram.png",
+        "kind": "image"
+      },
+      {
+        "title": "Data visualization",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-55-17\\08_scenario-suite\\03_data-viz.png",
+        "kind": "image"
+      },
+      {
+        "title": "Map / route layout",
+        "path": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-55-17\\08_scenario-suite\\04_map-route.png",
+        "kind": "image"
+      }
+    ]
+  },
+  {
     "run_id": "2026-05-21_08-41-43",
     "timestamp": "2026-05-21T06:43:07.041Z",
     "run_dir": "C:\\Users\\Lena\\Claude-key-viral\\outputs\\runs\\2026-05-21_08-41-43",

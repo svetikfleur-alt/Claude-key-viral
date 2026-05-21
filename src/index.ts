@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { startPlatform } from './platform/index.js';
 import { z } from 'zod';
 import { ComfyUiClient } from './comfyuiClient.js';
 import { loadConfig } from './config.js';
@@ -837,6 +838,19 @@ async function main() {
       return { content: [{ type: 'text', text: JSON.stringify({ status: 'failed', error: message, log_file: logFile }, null, 2) }], isError: true };
     }
   });
+
+  // ── Start the platform HTTP server + dashboard ──────────────────────────
+  // Runs alongside the MCP stdio server in the same process.
+  // Dashboard: http://127.0.0.1:3333
+  // API:       http://127.0.0.1:3333/api
+  try {
+    const { config } = await getRuntime();
+    const platformPort = parseInt(process.env.PLATFORM_PORT ?? '3333', 10);
+    await startPlatform(config, projectRoot, platformPort, server);
+  } catch (platformError) {
+    // Platform HTTP server failure is non-fatal — MCP server continues.
+    console.error('[platform] Failed to start HTTP server:', platformError);
+  }
 
   await server.connect(new StdioServerTransport());
 }
