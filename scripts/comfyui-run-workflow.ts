@@ -37,6 +37,28 @@ async function writeRunReport(runDir: string, lines: string[]) {
   await fs.writeFile(path.join(runDir, 'RUN_REPORT.md'), `${lines.join('\n')}\n`, 'utf8');
 }
 
+async function findNewestMatchingFile(dir: string, prefix: string): Promise<string | undefined> {
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    const matches: Array<{ file: string; mtime: number }> = [];
+    for (const entry of entries) {
+      if (!entry.isFile()) continue;
+      if (!entry.name.toLowerCase().startsWith(prefix.toLowerCase())) continue;
+      const full = path.join(dir, entry.name);
+      try {
+        const stat = await fs.stat(full);
+        matches.push({ file: full, mtime: stat.mtimeMs });
+      } catch {
+        // ignore
+      }
+    }
+    matches.sort((a, b) => b.mtime - a.mtime);
+    return matches[0]?.file;
+  } catch {
+    return undefined;
+  }
+}
+
 async function main() {
   const args = parseArgs();
   const projectRoot = process.cwd();
@@ -108,6 +130,66 @@ async function main() {
     status: 'preflight',
   });
 
+  // Extra safety: catch the most common cause of HTTP 400 ("checkpoint missing") before queueing.
+  // If the workflow uses CheckpointLoaderSimple and ComfyUI reports zero checkpoints, we fail fast with an actionable message.
+  try {
+    const usesCheckpointLoader = Object.values(patched.workflow).some((node) => (
+      node && typeof node === 'object' && String((node as any).class_type ?? '') === 'CheckpointLoaderSimple'
+    ));
+    if (usesCheckpointLoader) {
+      const info = await client.getObjectInfo(comfyUrl);
+      const ckptNode = info.CheckpointLoaderSimple as any;
+      const options = ckptNode?.input?.required?.ckpt_name?.[0];
+      const count = Array.isArray(options) ? options.length : undefined;
+      if (count === 0) {
+        throw new Error(
+          `No checkpoints detected in ComfyUI.\n` +
+          `Cause: your ComfyUI models/checkpoints folder is empty, so CheckpointLoaderSimple cannot load any model.\n` +
+          `Fix: install/copy at least one checkpoint into your ComfyUI checkpoints directory, then restart ComfyUI.\n` +
+          `Note: on this machine we detected 0 checkpoint options via /object_info.`
+        );
+      }
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const durationSeconds = Number(((Date.now() - started) / 1000).toFixed(3));
+    await writeRunLog(logFile, {
+      timestamp: new Date().toISOString(),
+      workflow_name: loaded.workflow_name,
+      prompt_id: promptId,
+      comfyui_url: comfyUrl,
+      input_parameters: input,
+      prompt_json: patched.workflow,
+      warnings: patched.warnings,
+      duration_seconds: durationSeconds,
+      status: 'failed',
+      error: message,
+    });
+    await writeRunReport(runDir, [
+      '# RUN_REPORT',
+      '',
+      `- Status: FAILED (preflight)`,
+      `- Workflow: ${loaded.workflow_name}`,
+      `- ComfyUI URL: ${comfyUrl}`,
+      `- Duration: ${durationSeconds}s`,
+      `- Log file: ${path.relative(projectRoot, logFile)}`,
+      '',
+      `Error: ${message}`,
+    ]);
+    process.stdout.write(`${JSON.stringify({
+      status: 'failed',
+      phase: 'preflight',
+      workflow_name: loaded.workflow_name,
+      comfyui_url: comfyUrl,
+      duration_seconds: durationSeconds,
+      log_file: logFile,
+      run_report: path.join(runDir, 'RUN_REPORT.md'),
+      error: message,
+    }, null, 2)}\n`);
+    process.exitCode = 2;
+    return;
+  }
+
   let promptId: string | undefined;
   try {
     const queued = await client.queuePrompt(patched.workflow, comfyUrl);
@@ -125,10 +207,26 @@ async function main() {
     });
 
     const history = await client.waitForPrompt(promptId, comfyUrl);
-    const outputs = detectOutputsFromHistory(history, promptId);
-    const durationSeconds = Number(((Date.now() - started) / 1000).toFixed(3));
+  const outputs = detectOutputsFromHistory(history, promptId);
+  const durationSeconds = Number(((Date.now() - started) / 1000).toFixed(3));
+  const resolvedOutputDir = config.comfyui_output_dir_abs;
+  let resolvedOutputPaths = resolvedOutputDir
+    ? outputs.images.map((item) => path.join(resolvedOutputDir, item.subfolder ?? '', item.filename))
+    : [];
 
-    await writeRunLog(logFile, {
+  // Fallback: Desktop-safe ComfyUI can return empty outputs for fully cached runs.
+  // If that happens, try to locate the newest file matching the SaveImage prefix.
+  if (resolvedOutputPaths.length === 0 && typeof resolvedOutputDir === 'string') {
+    const prefix = String(input.extra_params?.filename_prefix ?? '').trim();
+    if (prefix) {
+      const newest = await findNewestMatchingFile(resolvedOutputDir, prefix);
+      if (newest) {
+        resolvedOutputPaths = [newest];
+      }
+    }
+  }
+
+  await writeRunLog(logFile, {
       timestamp: new Date().toISOString(),
       workflow_name: loaded.workflow_name,
       prompt_id: promptId,
@@ -137,9 +235,9 @@ async function main() {
       prompt_json: patched.workflow,
       duration_seconds: durationSeconds,
       status: 'completed',
-      outputs,
-      warnings: outputs.warnings,
-    });
+    outputs,
+    warnings: outputs.warnings,
+  });
 
     await writeRunReport(runDir, [
       '# RUN_REPORT',
@@ -157,8 +255,13 @@ async function main() {
       `- Videos: ${outputs.videos.length}`,
       `- Other: ${outputs.other.length}`,
       '',
-      '### Image files',
-      ...outputs.images.map((item) => `- ${item.path}`),
+    '### Image files',
+    ...outputs.images.map((item) => `- ${item.path}`),
+    ...(resolvedOutputPaths.length ? [
+      '',
+      '### Resolved output paths (from config.comfyui_output_dir)',
+      ...resolvedOutputPaths.map((p) => `- ${p}`),
+    ] : []),
       '',
       '### Video files',
       ...outputs.videos.map((item) => `- ${item.path}`),
@@ -178,9 +281,10 @@ async function main() {
       duration_seconds: durationSeconds,
       log_file: logFile,
       run_report: path.join(runDir, 'RUN_REPORT.md'),
-      outputs,
-      patch_warnings: patched.warnings,
-    }, null, 2)}\n`);
+    outputs,
+    patch_warnings: patched.warnings,
+    resolved_output_paths: resolvedOutputPaths,
+  }, null, 2)}\n`);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const durationSeconds = Number(((Date.now() - started) / 1000).toFixed(3));

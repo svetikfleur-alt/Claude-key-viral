@@ -1,0 +1,5 @@
+Claude MCP Media Runner is a local-first media toolchain.
+It generates structured assets from code: banners, diagrams, dashboards, and video.
+When you need realism, it connects to your local ComfyUI as an optional background engine.
+Structure comes first. Randomness comes last.
+

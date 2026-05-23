@@ -64,6 +64,9 @@ export async function renderRemotionVideo(input: RemotionVideoInput, outputDir: 
   const outputPath = path.resolve(outputDir, `${outputName}.mp4`);
   await fs.mkdir(outputDir, { recursive: true });
 
+  const publicDir = path.resolve(projectRoot, 'public');
+  const hasPublicDir = await fs.access(publicDir).then(() => true).catch(() => false);
+
   const bundleDir = await fs.mkdtemp(path.join(os.tmpdir(), 'comfyui-mcp-remotion-'));
   try {
     const entryPoint = await resolveRemotionEntry();
@@ -85,7 +88,7 @@ export async function renderRemotionVideo(input: RemotionVideoInput, outputDir: 
       experimentalClientSideRenderingEnabled: false,
       renderDefaults: null,
       rootDir: null,
-      publicDir: null,
+      publicDir: hasPublicDir ? publicDir : null,
       rspack: false,
       gitSource: null,
       symlinkPublicDir: false,
@@ -111,7 +114,7 @@ export async function renderRemotionVideo(input: RemotionVideoInput, outputDir: 
       chromiumOptions: {
         gl: 'angle',
       },
-      muted: true,
+      muted: !(normalized.music_src || normalized.voiceover_src),
       logLevel: 'error',
     });
 

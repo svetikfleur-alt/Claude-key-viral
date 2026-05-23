@@ -26,6 +26,8 @@ export interface WorkflowConfigEntry {
 
 export interface AppConfig {
   comfyui_url: string;
+  comfyui_input_dir?: string;
+  comfyui_output_dir?: string;
   workflows_dir: string;
   logs_dir: string;
   generated_media_dir: string;
@@ -43,6 +45,8 @@ export interface ResolvedConfig extends AppConfig {
   logs_dir_abs: string;
   generated_media_dir_abs: string;
   outputs_index_file_abs: string;
+  comfyui_input_dir_abs?: string;
+  comfyui_output_dir_abs?: string;
 }
 
 export interface WorkflowNodeRole {
@@ -422,8 +426,12 @@ export interface RemotionVideoInput {
   title: string;
   subtitle?: string;
   theme?: 'sunset' | 'ocean' | 'forest' | 'slate';
-  visual_style?: 'presentation' | 'cinematic_robot' | 'pipeline_intro' | 'cinematic_treatment' | 'scene_sequence';
+  visual_style?: 'presentation' | 'cinematic_robot' | 'pipeline_intro' | 'pipeline_intro_pro' | 'cinematic_treatment' | 'scene_sequence';
   scenes?: CodegenSceneInput[];
+  music_src?: string;
+  voiceover_src?: string;
+  music_volume?: number;
+  voiceover_volume?: number;
   width?: number;
   height?: number;
   fps?: number;

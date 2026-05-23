@@ -27,6 +27,8 @@ const workflowEntrySchema = z.object({
 
 const appConfigSchema = z.object({
   comfyui_url: z.string().url().default('http://127.0.0.1:8188'),
+  comfyui_input_dir: z.string().min(1).optional(),
+  comfyui_output_dir: z.string().min(1).optional(),
   workflows_dir: z.string().min(1).default('./workflows'),
   logs_dir: z.string().min(1).default('./logs'),
   generated_media_dir: z.string().min(1).default('./generated-media'),
@@ -68,6 +70,8 @@ export async function loadConfig(projectRoot: string): Promise<ResolvedConfig> {
   const logsDirAbs = path.resolve(projectRoot, config.logs_dir);
   const generatedMediaDirAbs = path.resolve(projectRoot, config.generated_media_dir);
   const outputsIndexAbs = path.resolve(projectRoot, config.outputs_index_file);
+  const comfyInputAbs = config.comfyui_input_dir ? path.resolve(config.comfyui_input_dir) : undefined;
+  const comfyOutputAbs = config.comfyui_output_dir ? path.resolve(config.comfyui_output_dir) : undefined;
 
   assertInside(projectRoot, workflowsDirAbs);
   assertInside(projectRoot, logsDirAbs);
@@ -92,5 +96,7 @@ export async function loadConfig(projectRoot: string): Promise<ResolvedConfig> {
     logs_dir_abs: logsDirAbs,
     generated_media_dir_abs: generatedMediaDirAbs,
     outputs_index_file_abs: outputsIndexAbs,
+    comfyui_input_dir_abs: comfyInputAbs,
+    comfyui_output_dir_abs: comfyOutputAbs,
   };
 }

@@ -20,6 +20,12 @@ If you use a separate instance (example: Desktop-safe):
 npm run comfyui:health
 ```
 
+If `tsx` is not usable in your environment (for example, restricted child-process spawning), use:
+
+```bash
+npm run comfyui:health:dist
+```
+
 If it reports `unreachable`, ComfyUI is not running at the configured URL(s).
 
 ## 3. Add / Export a Workflow
@@ -52,6 +58,12 @@ or (after you update the checkpoint in `basic-image.workflow.json`):
 npm run comfyui:run -- basic-image "a cinematic fox walking through foggy pines at dawn"
 ```
 
+If `tsx` is not usable in your environment, use the compiled runner:
+
+```bash
+npm run comfyui:run:dist -- --workflow passthrough-image --extra "{\"filename_prefix\":\"manual_test\"}"
+```
+
 ## 6. Where Results Go
 
 - Logs: `logs/<runId>.json`
@@ -71,4 +83,3 @@ npm run comfyui:run -- basic-image "a cinematic fox walking through foggy pines 
   - increase `polling_timeout_seconds` in `config.json`
 - Queued but no output detected:
   - inspect `logs/<runId>.json` and the ComfyUI server console/history
-

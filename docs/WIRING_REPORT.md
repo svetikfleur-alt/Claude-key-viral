@@ -103,3 +103,41 @@ the following must be true:
 
 Next steps are documented in `docs/RUNBOOK.md`.
 
+---
+
+## Update (Verified End-to-End) — 2026-05-23
+
+This section reflects an actual end-to-end run performed on 2026-05-23 (no fake success).
+
+### ComfyUI Reachability
+
+- `http://127.0.0.1:8000` reachable (ComfyUI Desktop-safe instance).
+- `http://127.0.0.1:8188` unreachable (not running).
+
+### Real ComfyUI Run (No Models Required)
+
+Workflow: `passthrough-image` (LoadImage -> SaveImage)
+
+- prompt_id: `05093ba4-b59d-4d17-8a31-c32f3f55d48b`
+- Output detected from history.
+- Resolved output path:
+  - `C:\Users\Lena\Documents\ComfyUI\output\mvp_passthrough_2026-05-23_12-19-17_00001_.png`
+
+### Hybrid Pack (ComfyUI Background + Deterministic Overlay)
+
+Hybrid run dir:
+
+- `outputs/runs/2026-05-23_12-19-21/hybrid-comfy/`
+
+Generated assets:
+
+- `cards/nature-overlay.png` (+ `.svg`)
+- `cards/travel-promo.png` (+ `.svg`)
+
+Background output (ComfyUI output dir):
+
+- `C:\Users\Lena\Documents\ComfyUI\output\mcp_hybrid_2026-05-23_12-19-21_00001_.png`
+
+### Notes / Limitations
+
+- “Traditional AI” scenic generation (txt2img / checkpoints) is still gated by local model availability. If ComfyUI reports missing checkpoints, the runner now surfaces clearer suggestions, but it will not download gated models automatically.

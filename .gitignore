@@ -1,11 +1,16 @@
 node_modules/
 dist/
 logs/*.log
+logs/*.json
 logs/output-index.json
 logs/manual-smoke/
 generated-media/
 !.gitkeep
 outputs/runs/
+outputs/tmp_history_*.json
 .DS_Store
 config.json
 src/keys
+public/audio/*.mp3
+public/audio/*.wav
+public/audio/*.m4a

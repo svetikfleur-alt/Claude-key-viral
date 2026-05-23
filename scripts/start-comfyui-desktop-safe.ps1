@@ -36,6 +36,7 @@ if (Test-Path $stderrLog) { Remove-Item -LiteralPath $stderrLog -Force }
 
 $args = @(
   $mainPy
+  '--cpu'
   '--user-directory', (Join-Path $desktopBase 'user')
   '--input-directory', (Join-Path $desktopBase 'input')
   '--output-directory', (Join-Path $desktopBase 'output')

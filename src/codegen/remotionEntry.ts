@@ -11,6 +11,8 @@ import {
   spring,
   useCurrentFrame,
   useVideoConfig,
+  staticFile,
+  Html5Audio,
 } from 'remotion';
 import type { RemotionVideoInput } from '../types.js';
 
@@ -811,6 +813,243 @@ const PipelineIntroVideo: React.FC<Record<string, unknown>> = (rawProps) => {
     }, 'Code-first media pipeline • reproducible local runs'));
 };
 
+const PipelineIntroProVideo: React.FC<Record<string, unknown>> = (rawProps) => {
+  const inputProps = rawProps as RemotionVideoProps;
+  const frame = useCurrentFrame();
+  const { fps, durationInFrames, width, height } = useVideoConfig();
+
+  const t = frame / fps;
+  const intro = spring({ fps, frame, config: { damping: 14, stiffness: 120 } });
+  const fadeIn = interpolate(frame, [0, Math.round(fps * 0.7)], [0, 1], { extrapolateRight: 'clamp' });
+  const breathe = 0.5 + 0.5 * Math.sin(frame / 50);
+
+  const safe = {
+    x: Math.round(width * 0.06),
+    y: Math.round(height * 0.06),
+  };
+
+  const titleSize = Math.round(width * 0.056);
+  const subSize = Math.round(width * 0.022);
+
+  // Animated “flow” progress through pipeline blocks.
+  const phases = [
+    { at: 0.0, label: 'Brief', color: '#fb923c', note: 'Constraints and intent' },
+    { at: 0.18, label: 'Plan', color: '#a78bfa', note: 'Templates + renderer choice' },
+    { at: 0.36, label: 'Render', color: '#60a5fa', note: 'HTML/CSS • SVG • Video' },
+    { at: 0.54, label: 'Hybrid', color: '#34d399', note: 'ComfyUI bg + code overlay' },
+    { at: 0.72, label: 'Validate', color: '#facc15', note: 'Manifests + checks' },
+    { at: 0.86, label: 'Ship', color: '#22d3ee', note: 'Outputs + gallery' },
+  ];
+  let phaseIndex = 0;
+  for (let i = 0; i < phases.length; i += 1) {
+    const p = phases[i];
+    if (t >= p.at * (durationInFrames / fps)) phaseIndex = i;
+  }
+  const active = phases[phaseIndex];
+
+  const bg = React.createElement('div', {
+    style: {
+      position: 'absolute',
+      inset: 0,
+      background: 'radial-gradient(circle at 18% 18%, rgba(125,211,252,0.20), transparent 30%), radial-gradient(circle at 86% 72%, rgba(167,139,250,0.16), transparent 34%), linear-gradient(145deg, #060c18 0%, #0b152a 45%, #0f1f35 100%)',
+      transform: `scale(${1 + breathe * 0.005})`,
+    },
+  });
+
+  // Subtle grain overlay (CSS-only; deterministic).
+  const grain = React.createElement('div', {
+    style: {
+      position: 'absolute',
+      inset: 0,
+      backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%2760%27 height=%2760%27 filter=%27url(%23n)%27 opacity=%270.18%27/%3E%3C/svg%3E")',
+      mixBlendMode: 'overlay',
+      opacity: 0.55,
+    },
+  });
+
+  const header = React.createElement('div', {
+    style: {
+      position: 'absolute',
+      left: safe.x,
+      top: safe.y,
+      width: Math.round(width * 0.62),
+      opacity: fadeIn,
+      transform: `translateY(${interpolate(1 - intro, [0, 1], [0, 18])}px)`,
+    },
+  },
+  React.createElement('div', {
+    style: {
+      display: 'inline-flex',
+      gap: 10,
+      padding: '10px 14px',
+      borderRadius: 14,
+      border: '1px solid rgba(125,211,252,0.22)',
+      background: 'rgba(8,16,30,0.72)',
+      color: '#7dd3fc',
+      fontSize: 16,
+      fontWeight: 800,
+      letterSpacing: 1.2,
+      textTransform: 'uppercase',
+    },
+  }, 'Structure before randomness'),
+  React.createElement('div', {
+    style: {
+      marginTop: 18,
+      fontSize: titleSize,
+      lineHeight: 0.98,
+      fontWeight: 860,
+      letterSpacing: -2.4,
+    },
+  }, inputProps.title),
+  React.createElement('div', {
+    style: {
+      marginTop: 14,
+      maxWidth: Math.round(width * 0.56),
+      color: 'rgba(214,226,241,0.92)',
+      fontSize: subSize,
+      lineHeight: 1.45,
+    },
+  }, inputProps.subtitle ?? 'Local-first structured media workflows: code-first templates + optional local ComfyUI.'));
+
+  const chips = React.createElement('div', {
+    style: {
+      position: 'absolute',
+      right: safe.x,
+      top: safe.y,
+      display: 'flex',
+      gap: 10,
+      opacity: fadeIn,
+    },
+  }, ['Local-first', 'Deterministic', 'Inspectable outputs'].map((label) => React.createElement('div', {
+    key: label,
+    style: {
+      padding: '10px 14px',
+      borderRadius: 14,
+      background: 'rgba(255,255,255,0.06)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      color: '#d5deec',
+      fontSize: 15,
+      letterSpacing: 0.2,
+    },
+  }, label)));
+
+  // Pipeline blocks + animated connectors.
+  const blockW = Math.round(width * 0.14);
+  const blockH = Math.round(height * 0.14);
+  const rowY = Math.round(height * 0.52);
+  const startX = safe.x;
+  const gap = Math.round(width * 0.03);
+
+  const blocks = phases.map((p, i) => {
+    const x = startX + i * (blockW + gap);
+    const isActive = i <= phaseIndex;
+    const wobble = Math.sin((frame / 10) + i) * (isActive ? 2 : 0);
+    return React.createElement('div', {
+      key: p.label,
+      style: {
+        position: 'absolute',
+        left: x,
+        top: rowY,
+        width: blockW,
+        height: blockH,
+        borderRadius: 20,
+        padding: '18px 18px 16px 18px',
+        background: isActive ? 'rgba(14, 27, 47, 0.96)' : 'rgba(8, 16, 30, 0.72)',
+        border: `1px solid ${isActive ? `${p.color}44` : 'rgba(125,211,252,0.12)'}`,
+        boxShadow: isActive ? `0 14px 36px ${p.color}18` : '0 12px 24px rgba(0,0,0,0.16)',
+        transform: `translateY(${wobble}px) scale(${isActive ? 1.02 : 1})`,
+        opacity: fadeIn,
+      },
+    },
+    React.createElement('div', { style: { width: 38, height: 6, borderRadius: 4, background: p.color } }),
+    React.createElement('div', { style: { marginTop: 14, fontSize: 22, fontWeight: 820 } }, p.label),
+    React.createElement('div', { style: { marginTop: 10, color: 'rgba(183,198,219,0.95)', fontSize: 14, lineHeight: 1.35 } }, p.note));
+  });
+
+  const connectorProgress = interpolate(t, [0, durationInFrames / fps], [0, 1], { extrapolateRight: 'clamp' });
+  const connectorSvg = React.createElement('svg', {
+    width,
+    height,
+    style: { position: 'absolute', inset: 0, opacity: fadeIn },
+  },
+  React.createElement('defs', {}, React.createElement('linearGradient', { id: 'flow', x1: '0%', y1: '0%', x2: '100%', y2: '0%' },
+    React.createElement('stop', { offset: '0%', stopColor: '#7dd3fc', stopOpacity: 0.25 }),
+    React.createElement('stop', { offset: '55%', stopColor: active.color, stopOpacity: 0.62 }),
+    React.createElement('stop', { offset: '100%', stopColor: '#34d399', stopOpacity: 0.25 }),
+  )),
+  phases.slice(0, phases.length - 1).map((_, i) => {
+    const x1 = startX + i * (blockW + gap) + blockW;
+    const x2 = startX + (i + 1) * (blockW + gap);
+    const y = rowY + Math.round(blockH * 0.5);
+    const activeLine = i < phaseIndex;
+    const dashOffset = -frame * 2.2;
+    const seg = `M${x1} ${y} C${x1 + 40} ${y} ${x2 - 40} ${y} ${x2} ${y}`;
+    return React.createElement('path', {
+      key: `c${i}`,
+      d: seg,
+      fill: 'none',
+      stroke: activeLine ? 'url(#flow)' : 'rgba(148,163,184,0.22)',
+      strokeWidth: 4,
+      strokeLinecap: 'round',
+      strokeDasharray: activeLine ? '10 10' : undefined,
+      strokeDashoffset: activeLine ? dashOffset : undefined,
+      opacity: activeLine ? 0.95 : 0.65,
+    });
+  }));
+
+  // Timeline footer
+  const footer = React.createElement('div', {
+    style: {
+      position: 'absolute',
+      left: safe.x,
+      right: safe.x,
+      bottom: safe.y,
+      height: 86,
+      borderRadius: 22,
+      padding: '18px 20px',
+      background: 'rgba(6,12,22,0.52)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      boxShadow: '0 20px 44px rgba(0,0,0,0.28)',
+      backdropFilter: 'blur(10px)',
+      opacity: fadeIn,
+    },
+  },
+  React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 18 } },
+    React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 6 } },
+      React.createElement('div', { style: { color: active.color, fontWeight: 850, letterSpacing: 1.2, textTransform: 'uppercase', fontSize: 14 } }, `Active: ${active.label}`),
+      React.createElement('div', { style: { color: 'rgba(214,226,241,0.92)', fontSize: 16 } }, 'Same pipeline works for banners, diagrams, dashboards, nature overlays, and video.')),
+    React.createElement('div', { style: { textAlign: 'right', color: 'rgba(145,164,192,0.95)', fontSize: 15 } },
+      `t=${t.toFixed(1)}s  •  ${Math.round(connectorProgress * 100)}%`)));
+
+  return React.createElement(
+    AbsoluteFill,
+    { style: { background: '#050b13', color: '#f8fafc', fontFamily: 'Segoe UI, Arial, sans-serif', overflow: 'hidden' } },
+    bg,
+    grain,
+    inputProps.music_src ? React.createElement(Html5Audio, {
+      src: staticFile(inputProps.music_src),
+      volume: (f: number) => {
+        const base = typeof inputProps.music_volume === 'number' ? inputProps.music_volume : 0.18;
+        // Duck music when voiceover is present (simple, deterministic).
+        const hasVoice = Boolean(inputProps.voiceover_src);
+        const duck = hasVoice ? 0.35 : 1;
+        // Slight musical swell after the first second.
+        const swell = interpolate(f, [0, fps * 1.2], [0.85, 1], { extrapolateRight: 'clamp' });
+        return base * duck * swell;
+      },
+    }) : null,
+    inputProps.voiceover_src ? React.createElement(Html5Audio, {
+      src: staticFile(inputProps.voiceover_src),
+      volume: typeof inputProps.voiceover_volume === 'number' ? inputProps.voiceover_volume : 1.0,
+    }) : null,
+    header,
+    chips,
+    connectorSvg,
+    ...blocks,
+    footer,
+  );
+};
+
 const CinematicTreatmentVideo: React.FC<Record<string, unknown>> = (rawProps) => {
   const inputProps = rawProps as RemotionVideoProps;
   const frame = useCurrentFrame();
@@ -1014,8 +1253,10 @@ const RemotionRoot: React.FC = () => {
           ? React.createElement(CinematicTreatmentVideo, props)
         : typedProps.visual_style === 'cinematic_treatment'
           ? React.createElement(CinematicTreatmentVideo, props)
-        : typedProps.visual_style === 'pipeline_intro'
-          ? React.createElement(PipelineIntroVideo, props)
+          : typedProps.visual_style === 'pipeline_intro'
+            ? React.createElement(PipelineIntroVideo, props)
+          : typedProps.visual_style === 'pipeline_intro_pro'
+            ? React.createElement(PipelineIntroProVideo, props)
           : React.createElement(CodegenVideo, props);
     },
     defaultProps: defaultProps as unknown as Record<string, unknown>,

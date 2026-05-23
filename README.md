@@ -277,6 +277,19 @@ What it creates:
 - local gallery page
 - manifest and report
 
+### Music + Voiceover (Optional)
+
+The repo does **not** ship any licensed music. If you want a “real toolkit” feel (music bed + narration), drop your own licensed audio into:
+
+- `public/audio/music-bed.mp3`
+- `public/audio/voiceover.wav` (or generate one from `public/audio/voiceover.txt`)
+
+Generate a local Windows voiceover (SAPI) from the script:
+
+```bash
+npm run voiceover:generate
+```
+
 Open the gallery after a run:
 
 ```text

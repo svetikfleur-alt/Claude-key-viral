@@ -1,0 +1,19 @@
+{
+  "1": {
+    "inputs": {
+      "image": "mcp-background.png"
+    },
+    "class_type": "LoadImage"
+  },
+  "2": {
+    "inputs": {
+      "images": [
+        "1",
+        0
+      ],
+      "filename_prefix": "mcp_background"
+    },
+    "class_type": "SaveImage"
+  }
+}
+

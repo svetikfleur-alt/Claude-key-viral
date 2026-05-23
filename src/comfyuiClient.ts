@@ -23,6 +23,32 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function truncateForError(value: string): string {
+  return value.length > 2000 ? `${value.slice(0, 2000)}...` : value;
+}
+
+function jsonForError(value: unknown): string {
+  try {
+    return truncateForError(JSON.stringify(value));
+  } catch {
+    return String(value);
+  }
+}
+
+function suggestFromPromptError(message: string): string | undefined {
+  const lower = message.toLowerCase();
+  if (lower.includes('checkpoint') && (lower.includes('not found') || lower.includes('missing') || lower.includes('ckpt'))) {
+    return 'Missing checkpoint. Suggested fix: place a .safetensors/.ckpt file in ComfyUI/models/checkpoints and confirm it appears in /object_info (CheckpointLoaderSimple.ckpt_name).';
+  }
+  if ((lower.includes('model') || lower.includes('lora') || lower.includes('vae')) && (lower.includes('not found') || lower.includes('missing'))) {
+    return 'Missing model file. Suggested fix: verify required files exist under ComfyUI/models/* and confirm the loader node options via /object_info.';
+  }
+  if (lower.includes('invalid prompt') || lower.includes('prompt is invalid') || lower.includes('validation')) {
+    return 'Invalid prompt/workflow JSON. Suggested fix: re-export the workflow from ComfyUI and ensure the MCP runner mappings match node IDs and input keys.';
+  }
+  return undefined;
+}
+
 export class ComfyUiClient {
   constructor(private readonly config: ResolvedConfig) {}
 
@@ -79,15 +105,31 @@ export class ComfyUiClient {
     }, this.config.request_timeout_seconds);
 
     if (!response.ok) {
-      throw new Error(`ComfyUI prompt submission failed. Cause: HTTP ${response.status} ${response.statusText}. Suggested fix: check the workflow JSON and ComfyUI server logs.`);
+      const rawBody = await response.text().catch(() => '');
+      const body = truncateForError(rawBody);
+      const suggestion = rawBody ? suggestFromPromptError(rawBody) : undefined;
+      throw new Error(
+        `ComfyUI prompt submission failed. Cause: HTTP ${response.status} ${response.statusText}${body ? `; response: ${body}` : ''}. ` +
+        `Suggested fix: ${suggestion ?? 'check the workflow JSON and ComfyUI server logs.'}`,
+      );
     }
 
     const body = await response.json() as JsonObject;
     if (typeof body.prompt_id !== 'string' || body.prompt_id.length === 0) {
-      throw new Error('ComfyUI prompt submission failed. Cause: response did not contain prompt_id. Suggested fix: inspect the ComfyUI API response and verify the workflow format.');
+      throw new Error(`ComfyUI prompt submission failed. Cause: response did not contain prompt_id; response: ${jsonForError(body)}. Suggested fix: inspect the ComfyUI API response and verify the workflow format.`);
     }
 
     return { prompt_id: body.prompt_id, raw_response: body };
+  }
+
+  async getObjectInfo(comfyuiUrlOverride?: string): Promise<JsonObject> {
+    const base = this.baseUrl(comfyuiUrlOverride);
+    const response = await fetchWithTimeout(`${base}/object_info`, { method: 'GET' }, this.config.request_timeout_seconds);
+    if (!response.ok) {
+      const body = truncateForError(await response.text().catch(() => ''));
+      throw new Error(`ComfyUI object_info request failed. Cause: HTTP ${response.status} ${response.statusText}${body ? `; response: ${body}` : ''}. Suggested fix: ensure ComfyUI is running and supports /object_info.`);
+    }
+    return await response.json() as JsonObject;
   }
 
   async getPromptHistory(promptId: string, comfyuiUrlOverride?: string): Promise<JsonObject> {

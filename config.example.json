@@ -1,5 +1,7 @@
 {
   "comfyui_url": "http://127.0.0.1:8188",
+  "comfyui_input_dir": "C:/path/to/ComfyUI/input",
+  "comfyui_output_dir": "C:/path/to/ComfyUI/output",
   "workflows_dir": "./workflows",
   "logs_dir": "./logs",
   "generated_media_dir": "./generated-media",
@@ -12,7 +14,22 @@
       "file": "passthrough-image.workflow.json",
       "description": "Minimal end-to-end wiring test: LoadImage -> SaveImage. No models required. Uses robot-source.png from ComfyUI input/.",
       "comfyui_url_override": "http://127.0.0.1:8000",
-      "mappings": {}
+      "mappings": {
+        "extra_params": {
+          "filename_prefix": { "node_id": "2", "field_path": ["inputs", "filename_prefix"] }
+        }
+      }
+    },
+    "passthrough-any-image": {
+      "file": "passthrough-any-image.workflow.json",
+      "description": "ComfyUI background stage: LoadImage -> SaveImage with an overridable filename. No models required.",
+      "comfyui_url_override": "http://127.0.0.1:8000",
+      "mappings": {
+        "extra_params": {
+          "source_image": { "node_id": "1", "field_path": ["inputs", "image"] },
+          "filename_prefix": { "node_id": "2", "field_path": ["inputs", "filename_prefix"] }
+        }
+      }
     },
     "basic-image": {
       "file": "basic-image.workflow.json",

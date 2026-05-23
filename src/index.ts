@@ -71,6 +71,32 @@ function durationSeconds(startedAtMs: number): number {
   return Number(((Date.now() - startedAtMs) / 1000).toFixed(3));
 }
 
+function configuredComfyUrls(config: Awaited<ReturnType<typeof loadConfig>>, preferredUrl?: string): string[] {
+  const urls = [
+    preferredUrl,
+    config.comfyui_url,
+    ...Object.values(config.workflows).map((entry) => entry.comfyui_url_override),
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:8188',
+  ].filter((url): url is string => typeof url === 'string' && url.length > 0);
+
+  return Array.from(new Set(urls));
+}
+
+async function findReachableComfyUrl(
+  client: ComfyUiClient,
+  config: Awaited<ReturnType<typeof loadConfig>>,
+  preferredUrl?: string,
+) {
+  const results = [];
+  for (const url of configuredComfyUrls(config, preferredUrl)) {
+    const health = await client.healthCheckUrl(url);
+    results.push(health);
+    if (health.reachable) return { comfyuiUrl: url, results };
+  }
+  return { comfyuiUrl: undefined, results };
+}
+
 async function writeFailedRunLog(params: {
   config: Awaited<ReturnType<typeof loadConfig>>;
   logFile: string;
@@ -101,11 +127,12 @@ async function main() {
   async function runWorkflow(input: RunInput) {
     const { config, client } = await getRuntime();
     const loaded = await loadWorkflow(config, input.workflow_name);
-    const comfyuiUrl = loaded.configured_entry?.comfyui_url_override ?? config.comfyui_url;
-    const health = await client.healthCheckUrl(comfyuiUrl);
-    if (!health.reachable) {
-      return { ok: false as const, text: JSON.stringify(health, null, 2) };
+    const preferredUrl = loaded.configured_entry?.comfyui_url_override ?? config.comfyui_url;
+    const resolved = await findReachableComfyUrl(client, config, preferredUrl);
+    if (!resolved.comfyuiUrl) {
+      return { ok: false as const, text: JSON.stringify({ status: 'unreachable', results: resolved.results }, null, 2) };
     }
+    const comfyuiUrl = resolved.comfyuiUrl;
 
     const patched = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, input);
     const patchedWorkflow = patched.workflow;
@@ -119,6 +146,10 @@ async function main() {
       const outputs = detectOutputsFromHistory(history, queued.prompt_id);
       const durationSeconds = Number(((Date.now() - started) / 1000).toFixed(3));
       const warnings = [...patched.warnings, ...outputs.warnings];
+      const resolvedOutputDir = config.comfyui_output_dir_abs;
+      const resolvedOutputPaths = typeof resolvedOutputDir === 'string'
+        ? outputs.images.flatMap((item) => (item.filename ? [path.join(resolvedOutputDir, item.subfolder ?? '', item.filename)] : []))
+        : [];
 
       await writeRunLog(logFile, {
         timestamp: new Date().toISOString(),
@@ -163,6 +194,7 @@ async function main() {
           duration_seconds: durationSeconds,
           log_file: logFile,
           patch_warnings: patched.warnings,
+          resolved_output_paths: resolvedOutputPaths,
           warnings,
         }, null, 2),
       };
@@ -190,9 +222,13 @@ async function main() {
   }
 
   server.tool('health_check_comfyui', {}, async () => {
-    const { client } = await getRuntime();
-    const result = await client.healthCheck();
-    return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+    const { config, client } = await getRuntime();
+    const results = [];
+    for (const url of configuredComfyUrls(config)) {
+      results.push(await client.healthCheckUrl(url));
+    }
+    const reachable = results.some((result) => result.reachable);
+    return { content: [{ type: 'text', text: JSON.stringify({ status: reachable ? 'ok' : 'unreachable', results }, null, 2) }] };
   });
 
   server.tool('list_comfyui_workflows', {}, async () => {
@@ -787,6 +823,10 @@ async function main() {
     subtitle: z.string().optional(),
     theme: z.enum(['sunset', 'ocean', 'forest', 'slate']).optional(),
     visual_style: z.enum(['presentation', 'pipeline_intro', 'cinematic_robot', 'cinematic_treatment', 'scene_sequence']).optional(),
+    music_src: z.string().min(1).optional(),
+    voiceover_src: z.string().min(1).optional(),
+    music_volume: z.number().min(0).max(1).optional(),
+    voiceover_volume: z.number().min(0).max(2).optional(),
     scenes: z.array(z.object({
       headline: z.string().min(1),
       body: z.string().optional(),
