@@ -7,16 +7,16 @@
   },
   "2": {
     "inputs": {
-      "unet_name": "qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+      "unet_name": "qwen-image-edit\\qwen_image_edit_2509_fp8_e4m3fn.safetensors",
       "weight_dtype": "default"
     },
     "class_type": "UNETLoader"
   },
   "3": {
     "inputs": {
-      "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "clip_name": "qwen\\qwen_2.5_vl_7b_fp8_scaled.safetensors",
       "type": "qwen_image",
-      "device": "cpu"
+      "device": "default"
     },
     "class_type": "CLIPLoader"
   },
@@ -36,7 +36,7 @@
         "3",
         0
       ],
-      "lora_name": "Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors",
+      "lora_name": "qwen-image-edit-lightning\\Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors",
       "strength_model": 1,
       "strength_clip": 1
     },
@@ -133,4 +133,3 @@
     "class_type": "SaveImage"
   }
 }
-

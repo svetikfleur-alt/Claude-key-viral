@@ -17,6 +17,11 @@ type HybridPackResult = MediaPipelineRunResult & {
   comfyui_background_resolved?: string;
 };
 
+type HybridPackOptions = {
+  preferredSourcePaths?: string[];
+  allowReferenceStudies?: boolean;
+};
+
 function pad(value: number): string {
   return String(value).padStart(2, '0');
 }
@@ -57,6 +62,21 @@ async function findBestReferenceFrame(projectRoot: string): Promise<string | und
   } catch {
     return undefined;
   }
+}
+
+async function firstExistingImage(paths: string[]): Promise<string | undefined> {
+  for (const candidate of paths) {
+    if (!candidate) continue;
+    const ext = path.extname(candidate).toLowerCase();
+    if (!['.png', '.jpg', '.jpeg', '.webp'].includes(ext)) continue;
+    try {
+      const stat = await fs.stat(candidate);
+      if (stat.isFile() && stat.size > 0) return candidate;
+    } catch {
+      // keep looking
+    }
+  }
+  return undefined;
 }
 
 async function fileToDataUrlPng(filePath: string): Promise<string> {
@@ -125,7 +145,7 @@ function recordScene(id: string, title: string, primary: string, secondary: stri
   };
 }
 
-export async function generateHybridComfyOverlayPack(projectRoot: string): Promise<HybridPackResult> {
+export async function generateHybridComfyOverlayPack(projectRoot: string, options?: HybridPackOptions): Promise<HybridPackResult> {
   const config = await loadConfig(projectRoot);
   await ensureLogFiles(config);
   const client = new ComfyUiClient(config);
@@ -144,9 +164,10 @@ export async function generateHybridComfyOverlayPack(projectRoot: string): Promi
   const skipped: string[] = [];
 
   // 1) Choose a scenic-ish reference image (local frames extracted from a reference video).
-  const referenceFrame = await findBestReferenceFrame(projectRoot);
+  const referenceFrame = await firstExistingImage(options?.preferredSourcePaths ?? [])
+    ?? (options?.allowReferenceStudies ? await findBestReferenceFrame(projectRoot) : undefined);
   if (!referenceFrame) {
-    skipped.push('No reference frames found under outputs/reference-studies; hybrid pack skipped.');
+    skipped.push('No curated/project-relevant reference image was provided; hybrid pack skipped instead of using a low-signal fallback.');
   }
 
   // 2) Ensure ComfyUI reachable (prefer workflow override / config url).
@@ -222,26 +243,26 @@ export async function generateHybridComfyOverlayPack(projectRoot: string): Promi
       scene: overlayScene({
         width: 1600,
         height: 900,
-        eyebrow: 'NATURE / CINEMATIC',
-        title: 'Calm scenic background',
-        subtitle: 'Cinematic-looking background from local ComfyUI.\nOverlay stays deterministic and readable.',
+        eyebrow: 'PROJECT / HYBRID',
+        title: 'Local background, stable overlay',
+        subtitle: 'ComfyUI provides the background layer.\nLayout, hierarchy, and text stay deterministic.',
         backgroundDataUrl,
       }),
     }, dirCards);
-    assets.push(recordScene('hybrid-nature-overlay', 'Hybrid nature overlay (ComfyUI bg + code overlay)', nature.png_path ?? nature.svg_path, [nature.svg_path], nature.width, nature.height, [comfyuiBackgroundResolved]));
+    assets.push(recordScene('hybrid-nature-overlay', 'Hybrid project overlay (ComfyUI bg + code overlay)', nature.png_path ?? nature.svg_path, [nature.svg_path], nature.width, nature.height, [comfyuiBackgroundResolved]));
 
     const travel = await renderSvgScene({
       output_name: 'travel-promo',
       scene: overlayScene({
         width: 1600,
         height: 900,
-        eyebrow: 'TRAVEL PROMO',
-        title: 'Location promo card',
-        subtitle: 'Same background class, different overlay template.\nStructure stays stable across runs.',
+        eyebrow: 'LOCAL-FIRST MEDIA',
+        title: 'Reusable overlay template',
+        subtitle: 'Same background class, different messaging layer.\nThis is the scalable hybrid method.',
         backgroundDataUrl,
       }),
     }, dirCards);
-    assets.push(recordScene('hybrid-travel-promo', 'Hybrid travel promo (ComfyUI bg + code overlay)', travel.png_path ?? travel.svg_path, [travel.svg_path], travel.width, travel.height, [comfyuiBackgroundResolved]));
+    assets.push(recordScene('hybrid-travel-promo', 'Hybrid reusable promo (ComfyUI bg + code overlay)', travel.png_path ?? travel.svg_path, [travel.svg_path], travel.width, travel.height, [comfyuiBackgroundResolved]));
   } else {
     skipped.push('No ComfyUI background output resolved; overlays skipped.');
   }
@@ -306,4 +327,3 @@ export async function generateHybridComfyOverlayPack(projectRoot: string): Promi
     comfyui_background_resolved: comfyuiBackgroundResolved,
   };
 }
-

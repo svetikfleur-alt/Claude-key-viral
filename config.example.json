@@ -74,6 +74,14 @@
             "node_id": "9",
             "field_path": ["inputs", "denoise"]
           },
+          "clip_device": {
+            "node_id": "3",
+            "field_path": ["inputs", "device"]
+          },
+          "filename_prefix": {
+            "node_id": "11",
+            "field_path": ["inputs", "filename_prefix"]
+          },
           "source_image": {
             "node_id": "1",
             "field_path": ["inputs", "image"]
