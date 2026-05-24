@@ -52,6 +52,7 @@ Works now:
 
 - local MCP server startup
 - local ComfyUI health checks and workflow execution helpers
+- live ComfyUI runtime inspection and nature-image readiness checks
 - workflow dry runs and inspection
 - code-rendered PNG + SVG launch assets
 - scene-graph SVG rendering for arbitrary structured stills using text, panels, paths, circles, ellipses, polygons, gradients, filters, images, groups, and stacks
@@ -68,8 +69,31 @@ Planned later:
 - richer gallery/index browsing
 - stronger scene-specific video language
 - workflow mapping helpers
-- stronger ComfyUI inspection tooling
+- true local nature-image generation on this machine once a classic checkpoint is installed in ComfyUI
 - optional BYOK/BYOC cloud backends
+
+## Nature Image Reality Check
+
+This repo now includes a real checkpoint-based nature workflow:
+
+- `checkpoint-text2img-nature`
+
+Check whether your local ComfyUI runtime is actually ready for it:
+
+```bash
+npm run comfyui:nature-readiness:dist
+```
+
+Interpretation:
+
+- `ready`: at least one checkpoint is visible to `CheckpointLoaderSimple`
+- `blocked`: no checkpoint is visible, or only the Qwen edit stack is present
+
+Important:
+
+- The MCP runner is wired for true local nature generation.
+- The final missing piece on this machine is still a real checkpoint inside `ComfyUI/models/checkpoints`.
+- Without that, the runner will now fail fast with an explicit message instead of pretending the workflow is ready.
 
 ## Generated Demo Assets
 

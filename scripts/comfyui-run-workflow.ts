@@ -3,6 +3,7 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { loadConfig } from '../src/config.js';
 import { ComfyUiClient } from '../src/comfyuiClient.js';
+import { prepareWorkflowRun } from '../src/comfyuiReadiness.js';
 import { ensureLogFiles, writeRunLog } from '../src/logger.js';
 import { loadWorkflow } from '../src/workflowStore.js';
 import { patchWorkflowForRun } from '../src/workflowPatcher.js';
@@ -117,78 +118,19 @@ async function main() {
     extra_params: args.extra_params,
   };
 
-  const patched = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, input);
+  const prepared = await prepareWorkflowRun(config, client, loaded, input, comfyUrl);
+  const patched = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, prepared.input);
   const runDir = path.join(projectRoot, 'outputs', 'runs', nowStamp());
 
   await writeRunLog(logFile, {
     timestamp: new Date().toISOString(),
     workflow_name: loaded.workflow_name,
     comfyui_url: comfyUrl,
-    input_parameters: input,
+    input_parameters: prepared.input,
     prompt_json: patched.workflow,
-    warnings: patched.warnings,
-    status: 'preflight',
+    warnings: [...prepared.warnings, ...patched.warnings],
+    status: 'queued',
   });
-
-  // Extra safety: catch the most common cause of HTTP 400 ("checkpoint missing") before queueing.
-  // If the workflow uses CheckpointLoaderSimple and ComfyUI reports zero checkpoints, we fail fast with an actionable message.
-  try {
-    const usesCheckpointLoader = Object.values(patched.workflow).some((node) => (
-      node && typeof node === 'object' && String((node as any).class_type ?? '') === 'CheckpointLoaderSimple'
-    ));
-    if (usesCheckpointLoader) {
-      const info = await client.getObjectInfo(comfyUrl);
-      const ckptNode = info.CheckpointLoaderSimple as any;
-      const options = ckptNode?.input?.required?.ckpt_name?.[0];
-      const count = Array.isArray(options) ? options.length : undefined;
-      if (count === 0) {
-        throw new Error(
-          `No checkpoints detected in ComfyUI.\n` +
-          `Cause: your ComfyUI models/checkpoints folder is empty, so CheckpointLoaderSimple cannot load any model.\n` +
-          `Fix: install/copy at least one checkpoint into your ComfyUI checkpoints directory, then restart ComfyUI.\n` +
-          `Note: on this machine we detected 0 checkpoint options via /object_info.`
-        );
-      }
-    }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    const durationSeconds = Number(((Date.now() - started) / 1000).toFixed(3));
-    await writeRunLog(logFile, {
-      timestamp: new Date().toISOString(),
-      workflow_name: loaded.workflow_name,
-      prompt_id: promptId,
-      comfyui_url: comfyUrl,
-      input_parameters: input,
-      prompt_json: patched.workflow,
-      warnings: patched.warnings,
-      duration_seconds: durationSeconds,
-      status: 'failed',
-      error: message,
-    });
-    await writeRunReport(runDir, [
-      '# RUN_REPORT',
-      '',
-      `- Status: FAILED (preflight)`,
-      `- Workflow: ${loaded.workflow_name}`,
-      `- ComfyUI URL: ${comfyUrl}`,
-      `- Duration: ${durationSeconds}s`,
-      `- Log file: ${path.relative(projectRoot, logFile)}`,
-      '',
-      `Error: ${message}`,
-    ]);
-    process.stdout.write(`${JSON.stringify({
-      status: 'failed',
-      phase: 'preflight',
-      workflow_name: loaded.workflow_name,
-      comfyui_url: comfyUrl,
-      duration_seconds: durationSeconds,
-      log_file: logFile,
-      run_report: path.join(runDir, 'RUN_REPORT.md'),
-      error: message,
-    }, null, 2)}\n`);
-    process.exitCode = 2;
-    return;
-  }
 
   let promptId: string | undefined;
   try {
@@ -200,9 +142,9 @@ async function main() {
       workflow_name: loaded.workflow_name,
       prompt_id: promptId,
       comfyui_url: comfyUrl,
-      input_parameters: input,
+      input_parameters: prepared.input,
       prompt_json: patched.workflow,
-      warnings: patched.warnings,
+      warnings: [...prepared.warnings, ...patched.warnings],
       status: 'queued',
     });
 
@@ -231,12 +173,12 @@ async function main() {
       workflow_name: loaded.workflow_name,
       prompt_id: promptId,
       comfyui_url: comfyUrl,
-      input_parameters: input,
+      input_parameters: prepared.input,
       prompt_json: patched.workflow,
       duration_seconds: durationSeconds,
       status: 'completed',
     outputs,
-    warnings: outputs.warnings,
+    warnings: [...prepared.warnings, ...patched.warnings, ...outputs.warnings],
   });
 
     await writeRunReport(runDir, [
@@ -267,7 +209,7 @@ async function main() {
       ...outputs.videos.map((item) => `- ${item.path}`),
       '',
       '### Warnings',
-      ...(outputs.warnings.length ? outputs.warnings.map((w) => `- ${w}`) : ['- (none)']),
+      ...([ ...prepared.warnings, ...outputs.warnings ].length ? [ ...prepared.warnings, ...outputs.warnings ].map((w) => `- ${w}`) : ['- (none)']),
       '',
       '### Patch warnings',
       ...(patched.warnings.length ? patched.warnings.map((w) => `- ${w}`) : ['- (none)']),
@@ -282,7 +224,7 @@ async function main() {
       log_file: logFile,
       run_report: path.join(runDir, 'RUN_REPORT.md'),
     outputs,
-    patch_warnings: patched.warnings,
+    patch_warnings: [...prepared.warnings, ...patched.warnings],
     resolved_output_paths: resolvedOutputPaths,
   }, null, 2)}\n`);
   } catch (error) {
@@ -294,9 +236,9 @@ async function main() {
       workflow_name: loaded.workflow_name,
       prompt_id: promptId,
       comfyui_url: comfyUrl,
-      input_parameters: input,
+      input_parameters: prepared.input,
       prompt_json: patched.workflow,
-      warnings: patched.warnings,
+      warnings: [...prepared.warnings, ...patched.warnings],
       duration_seconds: durationSeconds,
       status: 'failed',
       error: message,
@@ -315,7 +257,7 @@ async function main() {
       `Error: ${message}`,
       '',
       '## Patch warnings',
-      ...(patched.warnings.length ? patched.warnings.map((w) => `- ${w}`) : ['- (none)']),
+      ...([ ...prepared.warnings, ...patched.warnings ].length ? [ ...prepared.warnings, ...patched.warnings ].map((w) => `- ${w}`) : ['- (none)']),
       '',
       'Next step: check ComfyUI stdout/stderr logs and try a lighter workflow (or GPU).',
     ]);
@@ -329,7 +271,7 @@ async function main() {
       log_file: logFile,
       run_report: path.join(runDir, 'RUN_REPORT.md'),
       error: message,
-      patch_warnings: patched.warnings,
+      patch_warnings: [...prepared.warnings, ...patched.warnings],
     }, null, 2)}\n`);
     process.exitCode = 2;
   }

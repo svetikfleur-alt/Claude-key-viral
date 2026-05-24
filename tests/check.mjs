@@ -5,6 +5,7 @@ import path from 'node:path';
 
 import { loadConfig } from '../dist/config.js';
 import { safeCopyFileIntoDir } from '../dist/comfyuiPaths.js';
+import { applyWorkflowDefaults, evaluateNatureReadiness } from '../dist/comfyuiReadiness.js';
 import { detectOutputsFromHistory } from '../dist/outputDetector.js';
 import { dryRunPatchWorkflow, patchWorkflowForRun } from '../dist/workflowPatcher.js';
 import { loadWorkflow } from '../dist/workflowStore.js';
@@ -100,6 +101,34 @@ await run('config: supports per-workflow comfyui_url_override + default_inputs',
   const config = await loadConfig(root);
   assert.equal(config.workflows['qwen-image-edit-pro'].comfyui_url_override, 'http://127.0.0.1:8000');
   assert.equal(config.workflows['qwen-image-edit-pro'].default_inputs.extra_params.denoise, 0.7);
+});
+
+await run('workflow defaults: merges default_inputs with user overrides', async () => {
+  const prepared = applyWorkflowDefaults({
+    workflow_name: 'checkpoint-text2img-nature',
+    positive_prompt: 'mountain valley',
+    extra_params: { steps: 12 },
+  }, {
+    file: 'checkpoint-text2img-nature.workflow.json',
+    default_inputs: {
+      seed: 123,
+      width: 1024,
+      height: 576,
+      extra_params: {
+        checkpoint_name: 'landscape.safetensors',
+        steps: 24,
+        cfg: 7,
+      },
+    },
+    mappings: {},
+  });
+
+  assert.equal(prepared.seed, 123);
+  assert.equal(prepared.width, 1024);
+  assert.equal(prepared.height, 576);
+  assert.equal(prepared.extra_params.checkpoint_name, 'landscape.safetensors');
+  assert.equal(prepared.extra_params.steps, 12);
+  assert.equal(prepared.extra_params.cfg, 7);
 });
 
 await run('safeCopyFileIntoDir: blocks path traversal', async () => {
@@ -214,6 +243,34 @@ await run('output grouping: images/videos/other', async () => {
   assert.equal(outputs.images.length, 3);
   assert.equal(outputs.videos.length, 1);
   assert.equal(outputs.other.length, 1);
+});
+
+await run('nature readiness: prefers checkpoint workflow when checkpoints exist', async () => {
+  const readiness = evaluateNatureReadiness({
+    comfyui_url: 'http://127.0.0.1:8000',
+    checkpoint_names: ['realisticVisionV60.safetensors'],
+    unet_names: [],
+    text_encoder_names: [],
+    vae_names: [],
+    lora_names: [],
+  });
+
+  assert.equal(readiness.status, 'ready');
+  assert.equal(readiness.preferred_workflow, 'checkpoint-text2img-nature');
+});
+
+await run('nature readiness: blocks qwen-only runtime', async () => {
+  const readiness = evaluateNatureReadiness({
+    comfyui_url: 'http://127.0.0.1:8000',
+    checkpoint_names: [],
+    unet_names: ['qwen-image-edit/qwen_image_edit_2509_fp8_e4m3fn.safetensors'],
+    text_encoder_names: ['qwen/qwen_2.5_vl_7b_fp8_scaled.safetensors'],
+    vae_names: ['qwen_image_vae.safetensors'],
+    lora_names: ['qwen-image-edit-lightning/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors'],
+  });
+
+  assert.equal(readiness.status, 'blocked');
+  assert.equal(readiness.preferred_workflow, 'qwen-image-from-blank');
 });
 
 process.exit(process.exitCode ?? 0);

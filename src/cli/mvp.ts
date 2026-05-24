@@ -39,6 +39,7 @@ async function main() {
     mvp_run_dir: path.relative(projectRoot, result.mvp_run_dir).replace(/\\/g, '/'),
     comfyui_health: result.comfyui_health,
     comfyui_passthrough: result.comfyui_passthrough,
+    comfyui_real_image: result.comfyui_real_image,
     hybrid_comfy_pack: result.hybrid_comfy_pack ? {
       run_dir: path.relative(projectRoot, result.hybrid_comfy_pack.run_dir).replace(/\\/g, '/'),
       report: path.relative(projectRoot, result.hybrid_comfy_pack.report_path).replace(/\\/g, '/'),

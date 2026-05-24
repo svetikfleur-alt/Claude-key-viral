@@ -71,7 +71,7 @@ export class ComfyUiClient {
         reachable: false,
         status: 'unreachable',
         comfyui_url: this.config.comfyui_url,
-        message: 'ComfyUI is not reachable. Make sure it is running at http://127.0.0.1:8188 or update config.json.',
+        message: `ComfyUI is not reachable. Make sure it is running at ${this.config.comfyui_url} or update config.json.`,
       };
     }
   }

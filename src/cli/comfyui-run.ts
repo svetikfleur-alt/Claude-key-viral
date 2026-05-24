@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { loadConfig } from '../config.js';
 import { ComfyUiClient } from '../comfyuiClient.js';
+import { prepareWorkflowRun } from '../comfyuiReadiness.js';
 import { loadWorkflow } from '../workflowStore.js';
 import { patchWorkflowForRun } from '../workflowPatcher.js';
 import { detectOutputsFromHistory } from '../outputDetector.js';
@@ -43,12 +44,13 @@ async function main() {
 
   const loaded = await loadWorkflow(config, workflowName);
   const comfyUrl = loaded.configured_entry?.comfyui_url_override ?? config.comfyui_url;
-
-  const patched = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, {
-    workflow_name: loaded.workflow_name,
+  const prepared = await prepareWorkflowRun(config, client, loaded, {
+    workflow_name: workflowName,
     positive_prompt: positivePrompt,
     extra_params: extraParams,
-  });
+  }, comfyUrl);
+
+  const patched = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, prepared.input);
 
   const queued = await client.queuePrompt(patched.workflow, comfyUrl);
   const history = await client.waitForPrompt(queued.prompt_id, comfyUrl);
@@ -64,7 +66,8 @@ async function main() {
     comfyui_url: comfyUrl,
     workflow_name: loaded.workflow_name,
     prompt_id: queued.prompt_id,
-    patch_warnings: patched.warnings,
+    patch_warnings: [...prepared.warnings, ...patched.warnings],
+    runtime_inventory: prepared.inventory,
     outputs,
     resolved_output_paths: resolvedOutputPaths,
   }, null, 2)}\n`);
@@ -74,4 +77,3 @@ main().catch((error) => {
   process.stderr.write(`run failed: ${(error as Error).message}\n`);
   process.exitCode = 1;
 });
-

@@ -42,3 +42,20 @@ npm run comfyui:health
 
 If ComfyUI is not running, it returns a clear unreachable status.
 
+## Nature Image Readiness (terminates)
+
+Run:
+
+```bash
+npm run comfyui:nature-readiness:dist
+```
+
+This checks the live ComfyUI runtime and tells you whether a **true local nature image** path is actually ready:
+
+- `ready`: at least one checkpoint is visible to `CheckpointLoaderSimple`
+- `blocked`: no checkpoint is visible, or only the Qwen edit stack is present
+
+Important:
+
+- A Qwen-only setup is not the stable nature-image path on this machine yet.
+- The preferred true txt2img route is a real checkpoint in `ComfyUI/models/checkpoints`.

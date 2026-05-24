@@ -128,10 +128,10 @@ function overlayHeader(title: string, subtitle: string, eyebrow: string, x: numb
     x,
     y,
     children: [
-      { kind: 'rect' as const, x: 0, y: 0, width: w, height: 230, radius: 28, fill: 'rgba(8, 16, 30, 0.72)', stroke: 'rgba(125, 211, 252, 0.18)', filter: 'shadow' },
+      { kind: 'rect' as const, x: 0, y: 0, width: w, height: 250, radius: 28, fill: 'rgba(8, 16, 30, 0.72)', stroke: 'rgba(125, 211, 252, 0.18)', filter: 'shadow' },
       { kind: 'text' as const, x: 30, y: 46, width: w - 60, text: eyebrow, font_size: 18, font_weight: 750, letter_spacing: 2.2, fill: '#7dd3fc' },
-      { kind: 'text' as const, x: 30, y: 96, width: w - 60, text: title, font_size: 58, font_weight: 820, fill: '#f8fafc', line_height: 1.03 },
-      { kind: 'text' as const, x: 30, y: 176, width: w - 60, text: subtitle, font_size: 24, fill: '#c7d7ea', line_height: 1.35 },
+      { kind: 'text' as const, x: 30, y: 96, width: w - 60, text: title, font_size: 52, font_weight: 820, fill: '#f8fafc', line_height: 1.05 },
+      { kind: 'text' as const, x: 30, y: 194, width: w - 60, text: subtitle, font_size: 22, fill: '#c7d7ea', line_height: 1.35 },
     ],
   };
 }
@@ -202,7 +202,7 @@ function pipelineDiagramScene(): SvgSceneSpec {
   const W = 1600;
   const H = 900;
   const margin = 72;
-  const headerH = 190;
+  const headerH = 220;
   const blockY = margin + headerH;
   const blockW = 330;
   const blockH = 210;
@@ -244,9 +244,9 @@ function pipelineDiagramScene(): SvgSceneSpec {
       { kind: 'circle', cx: 420, cy: 820, r: 620, fill: 'url(#orbB)', opacity: 0.72 },
       { kind: 'rect', x: 46, y: 46, width: 1508, height: 808, radius: 34, stroke: 'rgba(125,211,252,0.14)', fill: 'rgba(0,0,0,0)' },
 
-      { kind: 'text', x: margin, y: 110, width: 920, text: 'Structured media pipeline', font_size: 64, font_weight: 860, fill: '#f8fafc', line_height: 1.0 },
-      { kind: 'text', x: margin, y: 168, width: 980, text: 'Claude Desktop → Local MCP Runner → Code renderers / Optional local ComfyUI → Outputs', font_size: 24, fill: '#c7d7ea' },
-      { kind: 'rect', x: margin, y: 190, width: 640, height: 6, radius: 3, fill: 'rgba(125,211,252,0.72)' },
+      { kind: 'text', x: margin, y: 98, width: 1040, text: 'Structured media pipeline', font_size: 56, font_weight: 860, fill: '#f8fafc', line_height: 1.02 },
+      { kind: 'text', x: margin, y: 182, width: 1040, text: 'Claude Desktop → Local MCP Runner → Code renderers / Optional local ComfyUI → Outputs', font_size: 22, fill: '#c7d7ea', line_height: 1.35 },
+      { kind: 'rect', x: margin, y: 216, width: 620, height: 6, radius: 3, fill: 'rgba(125,211,252,0.72)' },
 
       block(xA, blockY, blockW, blockH, 'Claude Desktop', 'Calls MCP tools with structured inputs.\nNo custom UI required.', accentA),
       block(xB, blockY, blockW, blockH, 'Local MCP Runner', 'Validates requests.\nChooses renderer.\nWrites manifests.', accentB),
@@ -260,10 +260,10 @@ function pipelineDiagramScene(): SvgSceneSpec {
       // Optional ComfyUI badge (explicitly optional)
       {
         kind: 'group' as const,
-        x: xC + 20,
-        y: blockY + 160,
+        x: W - margin - 320,
+        y: 148,
         children: [
-          { kind: 'rect' as const, x: 0, y: 0, width: 290, height: 48, radius: 18, fill: 'rgba(2, 6, 23, 0.55)', stroke: 'rgba(52, 211, 153, 0.26)' },
+          { kind: 'rect' as const, x: 0, y: 0, width: 300, height: 52, radius: 18, fill: 'rgba(2, 6, 23, 0.55)', stroke: 'rgba(52, 211, 153, 0.26)' },
           { kind: 'text' as const, x: 18, y: 18, width: 260, text: 'Optional: local ComfyUI', font_size: 18, font_weight: 760, fill: '#34d399' },
         ],
       },
@@ -372,7 +372,7 @@ function dashboardScene(): SvgSceneSpec {
       { kind: 'circle', cx: 1160, cy: 170, r: 360, fill: 'url(#orbA)', opacity: 0.85 },
       { kind: 'circle', cx: 1320, cy: 820, r: 520, fill: 'url(#orbB)', opacity: 0.65 },
       { kind: 'rect', x: 54, y: 54, width: 1492, height: 792, radius: 34, stroke: 'rgba(125,211,252,0.14)', fill: 'rgba(0,0,0,0)' },
-      overlayHeader('Media Workbench Mockup', 'Brief → Plan → Render → Validate → Index → Report', 'DASHBOARD / WORKBENCH', 96, 90, 720),
+      overlayHeader('Media workbench', 'Brief → Plan → Render → Validate → Index → Report', 'DASHBOARD / WORKBENCH', 96, 90, 720),
       // Left panel: brief
       { kind: 'rect', x: 96, y: 360, width: 430, height: 458, radius: 26, fill: 'rgba(8, 16, 30, 0.9)', stroke: 'rgba(125,211,252,0.16)', filter: 'shadow' },
       { kind: 'text', x: 130, y: 414, width: 360, text: 'Media brief', font_size: 28, font_weight: 780, fill: '#f8fafc' },
@@ -456,9 +456,28 @@ function abstractBackgroundScene(): SvgSceneSpec {
       { kind: 'rect', x: 54, y: 54, width: 1492, height: 792, radius: 34, stroke: 'rgba(148,163,184,0.14)', fill: 'rgba(0,0,0,0)' },
       { kind: 'rect', x: 90, y: 90, width: 1420, height: 720, radius: 40, fill: 'rgba(2,6,23,0.26)', stroke: 'rgba(148,163,184,0.12)' },
       { kind: 'rect', x: 90, y: 744, width: 1420, height: 2, fill: 'url(#rim)' },
-      { kind: 'text', x: 130, y: 160, width: 900, text: 'Abstract cinematic background', font_size: 56, font_weight: 820, fill: '#f8fafc', line_height: 1.04 },
-      { kind: 'text', x: 130, y: 244, width: 900, text: 'Pure code can do atmosphere for overlays, but not photoreal scenes.', font_size: 24, fill: '#c7d7ea', line_height: 1.35 },
+      { kind: 'text', x: 130, y: 170, width: 900, text: 'Abstract cinematic background', font_size: 54, font_weight: 820, fill: '#f8fafc', line_height: 1.08 },
+      { kind: 'text', x: 130, y: 300, width: 860, text: 'Pure code can do atmosphere for overlays, but not photoreal scenes.', font_size: 24, fill: '#c7d7ea', line_height: 1.4 },
       { kind: 'text', x: 130, y: 820, width: 900, text: 'Use as a stable background layer under structured typography.', font_size: 18, fill: 'rgba(148,163,184,0.9)' },
+    ],
+  };
+}
+
+function scenicOverlayFallbackScene(title: string, subtitle: string, eyebrow: string): SvgSceneSpec {
+  return {
+    width: 1600,
+    height: 900,
+    background: 'url(#bg)',
+    defs: baselineDefs(),
+    nodes: [
+      { kind: 'circle', cx: 1180, cy: 180, r: 420, fill: 'url(#orbA)', opacity: 0.75 },
+      { kind: 'circle', cx: 1320, cy: 820, r: 620, fill: 'url(#orbB)', opacity: 0.62 },
+      { kind: 'rect', x: 56, y: 56, width: 1488, height: 788, radius: 34, stroke: 'rgba(125,211,252,0.12)', fill: 'rgba(0,0,0,0)' },
+      overlayHeader(title, subtitle, eyebrow, 72, 72, 900),
+      { kind: 'rect', x: 72, y: 370, width: 1456, height: 396, radius: 34, fill: 'rgba(4,10,24,0.38)', stroke: 'rgba(148,163,184,0.12)' },
+      { kind: 'path', d: 'M56 748 C300 642 490 716 720 620 C980 510 1120 560 1544 404', stroke: 'rgba(125,211,252,0.18)', stroke_width: 4, stroke_linecap: 'round', fill: 'none' },
+      { kind: 'path', d: 'M56 812 C280 764 520 792 760 724 C1040 644 1220 682 1544 566', stroke: 'rgba(196,181,253,0.14)', stroke_width: 3, stroke_linecap: 'round', fill: 'none' },
+      { kind: 'text', x: 72, y: 816, width: 1200, text: 'Use as a stable scenic placeholder until you supply a curated local photo or local ComfyUI background.', font_size: 20, fill: 'rgba(148,163,184,0.92)' },
     ],
   };
 }
@@ -490,29 +509,20 @@ function videoIntroFrameScene(): SvgSceneSpec {
   };
 }
 
-function pickLocalReferenceFrame(projectRoot: string): string | undefined {
-  const candidates = [
-    path.join(projectRoot, 'outputs', 'reference-studies'),
-  ];
-  return candidates.map((base) => base).find(() => true) ? undefined : undefined;
-}
-
 async function findAnyReferenceFramePng(projectRoot: string): Promise<string | undefined> {
-  const root = path.join(projectRoot, 'outputs', 'reference-studies');
-  try {
-    const studies = await fs.readdir(root, { withFileTypes: true });
-    for (const study of studies) {
-      if (!study.isDirectory()) continue;
-      const framesDir = path.join(root, study.name, '01_frames');
-      try {
-        const frames = (await fs.readdir(framesDir)).filter((name) => name.toLowerCase().endsWith('.png'));
-        if (frames.length) return path.join(framesDir, frames.sort()[0]);
-      } catch {
-        // keep looking
-      }
+  for (const curatedDir of [
+    path.join(projectRoot, 'public', 'reference-backgrounds'),
+    path.join(projectRoot, 'examples', 'reference-backgrounds'),
+  ]) {
+    try {
+      const files = await fs.readdir(curatedDir);
+      const picked = files
+        .filter((name) => /\.(png|jpg|jpeg|webp)$/i.test(name))
+        .sort()[0];
+      if (picked) return path.join(curatedDir, picked);
+    } catch {
+      // keep looking
     }
-  } catch {
-    // no reference studies
   }
   return undefined;
 }
@@ -750,22 +760,20 @@ export async function generateVisualBenchmark(projectRoot: string, options?: { o
   try {
     const refFrame = await findAnyReferenceFramePng(projectRoot);
     if (!refFrame) {
-      const out = await renderHtmlCard({
-        template: 'use_case_card',
-        title: 'Travel promo card',
-        subtitle: 'Overlay-first: swap in a scenic photo later without breaking layout.',
-        eyebrow: 'TRAVEL / LOCATION',
-        bullets: ['Stable title zone', 'Safe margins', 'Deterministic typography'],
-        badges: ['Hybrid-ready', 'Code-first overlay', 'Local-first'],
-        footer: 'Background currently procedural.',
+      const out = await renderSvgScene({
+        scene: scenicOverlayFallbackScene(
+          'Travel promo card',
+          'Overlay-first layout. Add a curated scenic background later without breaking hierarchy.',
+          'TRAVEL / LOCATION',
+        ),
         output_name: 'travel-promo',
       }, dirs.travel);
-      validations.push(await validateFileNonEmpty(out.png_path));
-      assets.push(assetRecord('travel-promo', 'visual-benchmark', 'html_card', 'Travel / location promo card (overlay-first)', out.png_path, [out.svg_path], out.width, out.height));
+      validations.push(await validateFileNonEmpty(out.png_path ?? out.svg_path));
+      assets.push(assetRecord('travel-promo', 'visual-benchmark', 'scene_graph', 'Travel / location promo card (overlay-first)', out.png_path ?? out.svg_path, [out.svg_path], out.width, out.height));
       rows.push({
         use_case: '4. Travel / location promo card',
-        file_path: out.png_path,
-        method: 'html_css_card',
+        file_path: out.png_path ?? out.svg_path,
+        method: out.png_path ? 'scene_graph_png' : 'scene_graph_svg',
         quality: 'acceptable',
         suitable_readme: false,
         suitable_social: true,

@@ -89,6 +89,69 @@
         }
       }
     },
+    "checkpoint-text2img-nature": {
+      "file": "checkpoint-text2img-nature.workflow.json",
+      "description": "Classic checkpoint-based txt2img nature workflow. Requires at least one visible local checkpoint in ComfyUI /object_info.",
+      "comfyui_url_override": "http://127.0.0.1:8000",
+      "default_inputs": {
+        "extra_params": {
+          "checkpoint_name": "your-checkpoint-name.safetensors",
+          "steps": 24,
+          "cfg": 7,
+          "sampler_name": "dpmpp_2m",
+          "scheduler": "karras",
+          "filename_prefix": "nature-checkpoint-test"
+        }
+      },
+      "mappings": {
+        "positive_prompt": {
+          "node_id": "2",
+          "field_path": ["inputs", "text"]
+        },
+        "negative_prompt": {
+          "node_id": "3",
+          "field_path": ["inputs", "text"]
+        },
+        "seed": {
+          "node_id": "5",
+          "field_path": ["inputs", "seed"]
+        },
+        "width": {
+          "node_id": "4",
+          "field_path": ["inputs", "width"]
+        },
+        "height": {
+          "node_id": "4",
+          "field_path": ["inputs", "height"]
+        },
+        "extra_params": {
+          "checkpoint_name": {
+            "node_id": "1",
+            "field_path": ["inputs", "ckpt_name"]
+          },
+          "steps": {
+            "node_id": "5",
+            "field_path": ["inputs", "steps"]
+          },
+          "cfg": {
+            "node_id": "5",
+            "field_path": ["inputs", "cfg"]
+          },
+          "sampler_name": {
+            "node_id": "5",
+            "field_path": ["inputs", "sampler_name"]
+          },
+          "scheduler": {
+            "node_id": "5",
+            "field_path": ["inputs", "scheduler"]
+          },
+          "filename_prefix": {
+            "node_id": "7",
+            "field_path": ["inputs", "filename_prefix"]
+          }
+        }
+      }
+    },
     "wan-i2v-pro": {
       "file": "wan-i2v-pro.workflow.json",
       "description": "WAN image-to-video placeholder. Replace with your exported working WAN I2V API prompt JSON. Defaults to ComfyUI Desktop-safe on :8000.",

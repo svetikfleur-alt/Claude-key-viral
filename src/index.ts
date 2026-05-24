@@ -6,6 +6,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { startPlatform } from './platform/index.js';
 import { z } from 'zod';
 import { ComfyUiClient } from './comfyuiClient.js';
+import { evaluateNatureReadiness, getComfyRuntimeInventory, prepareWorkflowRun } from './comfyuiReadiness.js';
 import { loadConfig } from './config.js';
 import { appendOutputIndex, buildRunLogPath, ensureLogFiles, readOutputIndex, writeRunLog } from './logger.js';
 import { renderHtmlCard } from './codegen/htmlCardRenderer.js';
@@ -134,7 +135,8 @@ async function main() {
     }
     const comfyuiUrl = resolved.comfyuiUrl;
 
-    const patched = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, input);
+    const prepared = await prepareWorkflowRun(config, client, loaded, input, comfyuiUrl);
+    const patched = patchWorkflowForRun(loaded.workflow_name, loaded.workflow, loaded.configured_entry?.mappings, prepared.input);
     const patchedWorkflow = patched.workflow;
     const runId = randomUUID();
     const logFile = buildRunLogPath(config, runId);
@@ -145,7 +147,7 @@ async function main() {
       const history = await client.waitForPrompt(queued.prompt_id, comfyuiUrl);
       const outputs = detectOutputsFromHistory(history, queued.prompt_id);
       const durationSeconds = Number(((Date.now() - started) / 1000).toFixed(3));
-      const warnings = [...patched.warnings, ...outputs.warnings];
+      const warnings = [...prepared.warnings, ...patched.warnings, ...outputs.warnings];
       const resolvedOutputDir = config.comfyui_output_dir_abs;
       const resolvedOutputPaths = typeof resolvedOutputDir === 'string'
         ? outputs.images.flatMap((item) => (item.filename ? [path.join(resolvedOutputDir, item.subfolder ?? '', item.filename)] : []))
@@ -158,12 +160,12 @@ async function main() {
         comfyui_url: comfyuiUrl,
         prompt_json: patchedWorkflow,
         input_parameters: {
-          positive_prompt: input.positive_prompt,
-          negative_prompt: input.negative_prompt,
-          seed: input.seed,
-          width: input.width,
-          height: input.height,
-          extra_params: input.extra_params,
+          positive_prompt: prepared.input.positive_prompt,
+          negative_prompt: prepared.input.negative_prompt,
+          seed: prepared.input.seed,
+          width: prepared.input.width,
+          height: prepared.input.height,
+          extra_params: prepared.input.extra_params,
         },
         duration_seconds: durationSeconds,
         status: 'completed',
@@ -194,6 +196,7 @@ async function main() {
           duration_seconds: durationSeconds,
           log_file: logFile,
           patch_warnings: patched.warnings,
+          runtime_inventory: prepared.inventory,
           resolved_output_paths: resolvedOutputPaths,
           warnings,
         }, null, 2),
@@ -207,12 +210,12 @@ async function main() {
         comfyui_url: comfyuiUrl,
         prompt_json: patchedWorkflow,
         input_parameters: {
-          positive_prompt: input.positive_prompt,
-          negative_prompt: input.negative_prompt,
-          seed: input.seed,
-          width: input.width,
-          height: input.height,
-          extra_params: input.extra_params,
+          positive_prompt: prepared.input.positive_prompt,
+          negative_prompt: prepared.input.negative_prompt,
+          seed: prepared.input.seed,
+          width: prepared.input.width,
+          height: prepared.input.height,
+          extra_params: prepared.input.extra_params,
         },
         status: 'failed',
         error: message,
@@ -229,6 +232,33 @@ async function main() {
     }
     const reachable = results.some((result) => result.reachable);
     return { content: [{ type: 'text', text: JSON.stringify({ status: reachable ? 'ok' : 'unreachable', results }, null, 2) }] };
+  });
+
+  server.tool('inspect_comfyui_runtime', {}, async () => {
+    const { config, client } = await getRuntime();
+    const resolved = await findReachableComfyUrl(client, config, config.comfyui_url);
+    if (!resolved.comfyuiUrl) {
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ status: 'unreachable', results: resolved.results }, null, 2),
+        }],
+        isError: true,
+      };
+    }
+    const inventory = await getComfyRuntimeInventory(client, resolved.comfyuiUrl);
+    const nature = evaluateNatureReadiness(inventory);
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          status: 'ok',
+          comfyui_url: resolved.comfyuiUrl,
+          inventory,
+          nature_readiness: nature,
+        }, null, 2),
+      }],
+    };
   });
 
   server.tool('list_comfyui_workflows', {}, async () => {

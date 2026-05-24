@@ -28,6 +28,19 @@ npm run comfyui:health:dist
 
 If it reports `unreachable`, ComfyUI is not running at the configured URL(s).
 
+## 2b. Verify Nature-Image Readiness (terminates)
+
+```bash
+npm run comfyui:nature-readiness:dist
+```
+
+Use this before trying a real local nature image.
+
+Interpretation:
+
+- `ready`: a checkpoint-based txt2img workflow can run
+- `blocked`: the runtime still lacks a checkpoint, or only a crash-prone Qwen path is visible
+
 ## 3. Add / Export a Workflow
 
 Put an exported ComfyUI API prompt JSON into `workflows/`.
@@ -64,6 +77,15 @@ If `tsx` is not usable in your environment, use the compiled runner:
 npm run comfyui:run:dist -- --workflow passthrough-image --extra "{\"filename_prefix\":\"manual_test\"}"
 ```
 
+For a true local nature image, prefer:
+
+```bash
+npm run comfyui:run:dist -- --workflow checkpoint-text2img-nature --positive "Cinematic alpine valley at sunrise, rolling fog between pine forests, dramatic mountain ridges, soft golden light, photorealistic landscape photography, highly detailed, natural atmosphere"
+```
+
+If exactly one checkpoint is visible in ComfyUI, the runner now auto-selects it.
+If multiple checkpoints are visible, set `extra_params.checkpoint_name`.
+
 ## 6. Where Results Go
 
 - Logs: `logs/<runId>.json`
@@ -78,8 +100,13 @@ npm run comfyui:run:dist -- --workflow passthrough-image --extra "{\"filename_pr
 - Wrong port:
   - update `comfyui_url` or per-workflow `comfyui_url_override`
 - Missing model / checkpoint:
-  - update the workflow JSON to reference a model that exists in your ComfyUI `models/` folders
+  - run `npm run comfyui:nature-readiness:dist`
+  - if it says no checkpoints are visible, put a real checkpoint in `ComfyUI/models/checkpoints`
+  - restart ComfyUI and retry
 - Polling timeout:
   - increase `polling_timeout_seconds` in `config.json`
 - Queued but no output detected:
   - inspect `logs/<runId>.json` and the ComfyUI server console/history
+- Qwen crashes during generation:
+  - this machine has shown `Windows fatal exception: access violation` on the Qwen blank-canvas path
+  - prefer `checkpoint-text2img-nature` once a real checkpoint is installed
